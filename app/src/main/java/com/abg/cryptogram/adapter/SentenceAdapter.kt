@@ -1,4 +1,4 @@
-package com.abg.cryptogram
+package com.abg.cryptogram.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,18 +8,26 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.abg.cryptogram.R
+import com.abg.cryptogram.model.Sentence
 
 class SentenceAdapter : Adapter<SentenceAdapter.SentenceViewHolder>() {
 
     private var sentences: MutableList<Sentence> = mutableListOf()
+
+    fun setSentences(sentences: MutableList<Sentence>) {
+        this.sentences = sentences
+        notifyDataSetChanged()
+    }
 
     class SentenceViewHolder(private val view: View): ViewHolder(view) {
 
         private val recyclerLetter: RecyclerView = view.findViewById(R.id.recycler_letter)
 
         fun bind(sentence: Sentence) {
+            val adapter = LetterAdapter(sentence.letters)
             recyclerLetter.layoutManager = LinearLayoutManager(view.context, HORIZONTAL, false)
-
+            recyclerLetter.adapter = adapter
         }
     }
 
@@ -29,7 +37,7 @@ class SentenceAdapter : Adapter<SentenceAdapter.SentenceViewHolder>() {
     ): SentenceViewHolder = SentenceViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_sentence, parent,false))
 
     override fun onBindViewHolder(holder: SentenceViewHolder, position: Int) {
-
+        holder.bind(sentences[position])
     }
 
     override fun getItemCount(): Int = sentences.size
