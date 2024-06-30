@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.cryptogram.R
-import com.abg.cryptogram.model.Sentence
+import com.abg.cryptogram.model.Word
 
-class SentenceAdapter : Adapter<SentenceAdapter.SentenceViewHolder>() {
+class WordAdapter : Adapter<WordAdapter.SentenceViewHolder>() {
 
-    private var sentences: MutableList<Sentence> = mutableListOf()
+    private var sentences: MutableList<Word> = mutableListOf()
 
-    fun setSentences(sentences: MutableList<Sentence>) {
+    fun setSentences(sentences: MutableList<Word>) {
         this.sentences = sentences
         notifyDataSetChanged()
     }
@@ -24,7 +24,7 @@ class SentenceAdapter : Adapter<SentenceAdapter.SentenceViewHolder>() {
 
         private val recyclerLetter: RecyclerView = view.findViewById(R.id.recycler_letter)
 
-        fun bind(sentence: Sentence) {
+        fun bind(sentence: Word) {
             val adapter = LetterAdapter(sentence.letters)
             recyclerLetter.layoutManager = LinearLayoutManager(view.context, HORIZONTAL, false)
             recyclerLetter.adapter = adapter
