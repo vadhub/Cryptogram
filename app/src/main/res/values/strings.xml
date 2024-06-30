@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Cryptogram</string>
-<!--    <test_quote>Упади семь раз и восемь раз поднимись</test_quote>-->
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--    <test_quote>Упади семь раз и восемь раз поднимись</test_quote>-->
 </resources>
