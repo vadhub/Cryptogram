@@ -34,7 +34,7 @@ class LetterAdapter(
                         parentPosition,
                         layoutPosition,
                         this,
-                        letter.letter.toString()
+                        letter.letter
                     )
                 }
                 text = ""

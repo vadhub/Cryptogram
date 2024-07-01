@@ -41,7 +41,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
                 }
                 val isFill = Random.nextBoolean()
                 if (!isFill) {
-                  notGuessed++
+                    notGuessed++
                 }
                 letters.add(Letter(c, number, isFill))
             }
@@ -52,9 +52,9 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     }
 
     fun compareLetters(candidate: Char): Boolean {
-        if (candidate==letter) {
+        if (candidate == letter) {
             notGuessed--
-            if (notGuessed==0) {
+            if (notGuessed == 0) {
                 gameStatus.invoke(StatusGame.WIN)
             }
             return true

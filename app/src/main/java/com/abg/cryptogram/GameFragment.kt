@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.adapter.WordAdapter
+import com.abg.cryptogram.model.Letter
 import com.abg.cryptogram.model.LetterHandler
 
 class GameFragment : Fragment() {
@@ -30,15 +31,21 @@ class GameFragment : Fragment() {
                 Game.StatusGame.WIN -> { Log.d("info", "ok")}
             }
         }
-        val letterHandler = LetterHandler {
-            Log.d("info", it + " BUKVA )))0000) ")
+        val sentence = "Упади семь раз и восемь раз поднимись"
+        val list = game.sentenceMapToListWords(sentence)
+        val letterHandler = LetterHandler { letter ->
+            game.setLetter(letter)
         }
         val wordAdapter = WordAdapter(letterHandler)
-        val sentence = "Упади семь раз и восемь раз поднимись"
 
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
         val keyBoard = KeyBoardClickListener {
-            Log.d("info", it.toString())
+            if (game.compareLetters(it)) {
+                val position= letterHandler.getCurrentPosition()
+                val letter = list[position.first].letters[position.second].copy(isFill = true)
+                list[position.first].letters[position.second] = letter
+            }
+            letterHandler.setToTextView(it)
         }
         val a: TextView = keyBoardView.findViewById(R.id.letterA)
         val b: TextView = keyBoardView.findViewById(R.id.letterBlyat)
@@ -106,7 +113,7 @@ class GameFragment : Fragment() {
         yu.setOnClickListener(keyBoard)
         ya.setOnClickListener(keyBoard)
 
-        wordAdapter.setSentences(game.sentenceMapToListWords(sentence))
+        wordAdapter.setSentences(list)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = wordAdapter
     }
