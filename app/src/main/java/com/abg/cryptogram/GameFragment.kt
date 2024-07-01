@@ -9,10 +9,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.adapter.WordAdapter
-import com.abg.cryptogram.model.Letter
-import com.abg.cryptogram.model.Word
-import kotlin.random.Random
+import com.abg.cryptogram.model.LetterHandler
 
 class GameFragment : Fragment() {
 
@@ -25,6 +24,12 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView: RecyclerView = view.findViewById(R.id.sentence_recycler)
+        val game = Game {
+            when(it) {
+                Game.StatusGame.GAME_OVER -> { Log.d("info", "lol")}
+                Game.StatusGame.WIN -> { Log.d("info", "ok")}
+            }
+        }
         val letterHandler = LetterHandler {
             Log.d("info", it + " BUKVA )))0000) ")
         }
@@ -101,32 +106,8 @@ class GameFragment : Fragment() {
         yu.setOnClickListener(keyBoard)
         ya.setOnClickListener(keyBoard)
 
-        wordAdapter.setSentences(sentenceMapToListWords(sentence))
+        wordAdapter.setSentences(game.sentenceMapToListWords(sentence))
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = wordAdapter
-    }
-
-    private fun sentenceMapToListWords(sentence: String): MutableList<Word> {
-        val alphabet: MutableMap<Char, Int> = mutableMapOf()
-        val words: MutableList<Word> = mutableListOf()
-        var letters: MutableList<Letter> = mutableListOf()
-        var counter = 1
-        sentence.split(" ").forEach { it ->
-            it.filter { it.isLetter() }.forEach { char ->
-                var c = char
-                val number: Int
-                if (char !in alphabet) {
-                    c = char
-                    number = counter++
-                    alphabet[c] = number
-                } else {
-                    number = alphabet[char]!!
-                }
-                letters.add(Letter(c, number, Random.nextBoolean()))
-            }
-            words.add(Word(letters))
-            letters = mutableListOf()
-        }
-        return words
     }
 }
