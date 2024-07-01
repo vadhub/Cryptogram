@@ -28,7 +28,7 @@ class GameFragment : Fragment() {
         val sentence = "Упади семь раз и восемь раз поднимись"
 
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
-        val keyBoard = KeyBoard {
+        val keyBoard = KeyBoardClickListener {
             Log.d("info", it.toString())
         }
         val a: TextView = keyBoardView.findViewById(R.id.letterA)
@@ -123,11 +123,6 @@ class GameFragment : Fragment() {
             words.add(Word(letters))
             letters = mutableListOf()
         }
-
-        words.forEach {
-            Log.d("info", it.letters.toTypedArray().contentToString())
-        }
-
         return words
     }
 }
