@@ -1,6 +1,7 @@
 package com.abg.cryptogram
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,8 +30,32 @@ class GameFragment : Fragment() {
         recyclerView.adapter = wordAdapter
     }
 
-    private fun sentenceMapToListWords(sentence: String): MutableList<Word> =
-        sentence.split(" ")
-            .map { Word(it.map { word -> Letter(word, Math.random().toInt(), true) }.toMutableList()) }
-            .toMutableList()
+    private fun sentenceMapToListWords(sentence: String): MutableList<Word> {
+        val alphabet: MutableMap<Char, Int> = mutableMapOf()
+        val words: MutableList<Word> = mutableListOf()
+        var letters: MutableList<Letter> = mutableListOf()
+        var counter = 1
+        sentence.split(" ").forEach { it ->
+            it.filter { it.isLetter() }.forEach { char ->
+                var c = char
+                val number: Int
+                if (char !in alphabet) {
+                    c = char
+                    number = counter++
+                    alphabet[c] = number
+                } else {
+                    number = alphabet[char]!!
+                }
+                letters.add(Letter(c, number, true))
+            }
+            words.add(Word(letters))
+            letters = mutableListOf()
+        }
+
+        words.forEach {
+            Log.d("info", it.letters.toTypedArray().contentToString())
+        }
+
+        return words
+    }
 }
