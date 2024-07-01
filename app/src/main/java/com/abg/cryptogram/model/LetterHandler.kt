@@ -1,6 +1,7 @@
-package com.abg.cryptogram
+package com.abg.cryptogram.model
 
 import android.content.Context
+import com.abg.cryptogram.R
 import com.abg.cryptogram.adapter.LetterAdapter
 
 class LetterHandler(private val selectLetter: (letter: String) -> Unit) {

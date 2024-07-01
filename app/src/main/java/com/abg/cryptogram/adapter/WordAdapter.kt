@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.cryptogram.R
-import com.abg.cryptogram.LetterHandler
+import com.abg.cryptogram.model.LetterHandler
 import com.abg.cryptogram.model.Word
 
 class WordAdapter(private val sentenceHandler: LetterHandler) :

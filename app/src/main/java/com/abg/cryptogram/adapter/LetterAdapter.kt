@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.cryptogram.R
-import com.abg.cryptogram.LetterHandler
+import com.abg.cryptogram.model.LetterHandler
 import com.abg.cryptogram.model.Letter
 
 class LetterAdapter(
