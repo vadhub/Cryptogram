@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abg.cryptogram.adapter.WordAdapter
 import com.abg.cryptogram.model.Letter
 import com.abg.cryptogram.model.Word
+import kotlin.random.Random
 
 class GameFragment : Fragment() {
 
@@ -24,7 +25,10 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView: RecyclerView = view.findViewById(R.id.sentence_recycler)
-        val wordAdapter = WordAdapter()
+        val letterHandler = LetterHandler {
+            Log.d("info", it + " BUKVA )))0000) ")
+        }
+        val wordAdapter = WordAdapter(letterHandler)
         val sentence = "Упади семь раз и восемь раз поднимись"
 
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
@@ -118,7 +122,7 @@ class GameFragment : Fragment() {
                 } else {
                     number = alphabet[char]!!
                 }
-                letters.add(Letter(c, number, true))
+                letters.add(Letter(c, number, Random.nextBoolean()))
             }
             words.add(Word(letters))
             letters = mutableListOf()

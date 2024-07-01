@@ -7,24 +7,47 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.cryptogram.R
+import com.abg.cryptogram.LetterHandler
 import com.abg.cryptogram.model.Letter
 
-class LetterAdapter(private val sentence: MutableList<Letter>) : Adapter<LetterAdapter.LetterViewHolder>() {
+class LetterAdapter(
+    private val parentPosition: Int,
+    private val sentence: MutableList<Letter>,
+    private val letterHandler: LetterHandler
+) : Adapter<LetterAdapter.LetterViewHolder>() {
 
-    class LetterViewHolder(view: View): ViewHolder(view)  {
+    inner class LetterViewHolder(view: View) : ViewHolder(view) {
 
-        private val editLetter: TextView = view.findViewById(R.id.editLetter)
+        val editLetter: TextView = view.findViewById(R.id.editLetter)
         private val hintNumber: TextView = view.findViewById(R.id.hintNumber)
 
         fun bind(letter: Letter) {
-            editLetter.isClickable = !letter.isFill
-            editLetter.text = letter.letter.toString()
+
+            val text: String
+
+            if (letter.isFill) {
+                editLetter.isClickable = false
+                text = letter.letter.toString()
+            } else {
+                editLetter.setOnClickListener {
+                    letterHandler.highlightText(
+                        parentPosition,
+                        layoutPosition,
+                        this,
+                        letter.letter.toString()
+                    )
+                }
+                text = ""
+            }
+            editLetter.text = text
             hintNumber.text = letter.code.toString()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterViewHolder =
-        LetterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_letter, parent,false))
+        LetterViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_letter, parent, false)
+        )
 
     override fun getItemCount(): Int = sentence.size
 
