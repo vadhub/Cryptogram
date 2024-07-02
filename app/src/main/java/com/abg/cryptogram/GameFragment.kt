@@ -32,8 +32,9 @@ class GameFragment : Fragment() {
                 Game.StatusGame.WIN -> { Log.d("info", "ok")}
             }
         }
-        val sentence = "УПАДИ/СЕМЬ РАЗ /И ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
+        val sentence = "УПАДИ/СЕМЬ  РАЗ /И  ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
         val list = game.sentenceMapToListWords(sentence)
+
         Log.d("info", list.toTypedArray().contentToString())
         val letterHandler = LetterHandler { letter ->
             game.setLetter(letter)

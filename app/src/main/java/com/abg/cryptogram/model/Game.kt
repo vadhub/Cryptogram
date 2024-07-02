@@ -72,7 +72,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
             words.add(Word(letters))
             letters = mutableListOf()
         }
-        Log.d("info", frequency.toList().toTypedArray().contentToString())
+        clearZeroFrequency(words)
         return words
     }
 
@@ -99,6 +99,12 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
                     it.hintDestroy = true
                 }
             }
+        }
+    }
+
+    private fun clearZeroFrequency(words: MutableList<Word>) {
+        frequency.filter { it.value == 0 }.forEach {
+            changeHintAllConcreteLetter(words,it.key)
         }
     }
 
