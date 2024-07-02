@@ -1,6 +1,7 @@
 package com.abg.cryptogram.model
 
 import android.util.Log
+import com.abg.cryptogram.adapter.LetterAdapter
 import kotlin.random.Random
 
 class Game(private val gameStatus: (StatusGame) -> Unit) {
@@ -33,36 +34,40 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     fun sentenceMapToListWords(sentence: String): MutableList<Word> {
         val alphabet: MutableMap<Char, Int> = mutableMapOf()
         val words: MutableList<Word> = mutableListOf()
-        var letters: MutableList<Letter> = mutableListOf()
+        var letters: MutableList<Symbol> = mutableListOf()
         var counter = 1
-        sentence.split(" ").forEach { it ->
-            it.filter { it.isLetter() }.forEach { char ->
-                var c = char
-                val number: Int
-                val isFill = Random.nextBoolean()
-                if (char !in alphabet) {
-                    c = char
-                    number = counter++
-                    alphabet[c] = number
-                    if (!isFill) {
-                        frequency[c] = 1
+        sentence.split("/").forEach { word ->
+            word.forEach { char ->
+                if (char.isLetter()) {
+                    var c = char
+                    val number: Int
+                    val isFill = Random.nextBoolean()
+                    if (char !in alphabet) {
+                        c = char
+                        number = counter++
+                        alphabet[c] = number
+                        if (!isFill) {
+                            frequency[c] = 1
+                        } else {
+                            frequency[c] = 0
+                        }
                     } else {
-                        frequency[c] = 0
-                    }
-                } else {
-                    number = alphabet[char]!!
-                    if (!isFill) {
-                        val count = frequency[c]
-                        if (count != null) {
-                            frequency[c] = count + 1
+                        number = alphabet[char]!!
+                        if (!isFill) {
+                            val count = frequency[c]
+                            if (count != null) {
+                                frequency[c] = count + 1
+                            }
                         }
                     }
-                }
 
-                if (!isFill) {
-                    notGuessed++
+                    if (!isFill) {
+                        notGuessed++
+                    }
+                    letters.add(Symbol(c, number, isFill, viewType = LetterAdapter.VIEW_TYPE_LETTER))
+                } else {
+                    letters.add(Symbol(char, -1, isFill = true, viewType = LetterAdapter.VIEW_TYPE_SIGN))
                 }
-                letters.add(Letter(c, number, isFill))
             }
             words.add(Word(letters))
             letters = mutableListOf()
@@ -90,7 +95,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     fun changeHintAllConcreteLetter(words: MutableList<Word>, letter: Char) {
         words.forEach { word ->
             word.letters.forEach {
-                if (it.letter == letter) {
+                if (it.symbol == letter) {
                     it.hintDestroy = true
                 }
             }

@@ -1,5 +1,5 @@
 package com.abg.cryptogram.model
 
 data class Word(
-    val letters: MutableList<Letter>
+    val letters: MutableList<Symbol>
 )
