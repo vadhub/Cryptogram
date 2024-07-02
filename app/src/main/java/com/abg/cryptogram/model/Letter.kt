@@ -4,5 +4,5 @@ data class Letter(
     val letter: Char,
     val code: Int,
     val isFill: Boolean,
-    val frequency: Int
+    var hintDestroy: Boolean = false
 )

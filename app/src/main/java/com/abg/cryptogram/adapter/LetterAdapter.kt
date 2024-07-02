@@ -7,8 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.cryptogram.R
-import com.abg.cryptogram.model.LetterHandler
 import com.abg.cryptogram.model.Letter
+import com.abg.cryptogram.model.LetterHandler
 
 class LetterAdapter(
     private val parentPosition: Int,
@@ -40,7 +40,7 @@ class LetterAdapter(
                 text = ""
             }
             editLetter.text = text
-            hintNumber.text = if (letter.frequency <= 1 && letter.isFill) "" else letter.code.toString()
+            hintNumber.text = if (!letter.hintDestroy) letter.code.toString() else ""
         }
     }
 

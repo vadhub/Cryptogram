@@ -1,5 +1,6 @@
 package com.abg.cryptogram
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.adapter.WordAdapter
-import com.abg.cryptogram.model.Letter
 import com.abg.cryptogram.model.LetterHandler
 
 class GameFragment : Fragment() {
@@ -23,6 +23,7 @@ class GameFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_game, container, false)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView: RecyclerView = view.findViewById(R.id.sentence_recycler)
         val game = Game {
@@ -33,17 +34,26 @@ class GameFragment : Fragment() {
         }
         val sentence = "УПАДИ СЕМЬ РАЗ И ВОСЕМЬ РАЗ ПОДНИМИСЬ"
         val list = game.sentenceMapToListWords(sentence)
+        Log.d("info", list.toTypedArray().contentToString())
         val letterHandler = LetterHandler { letter ->
             game.setLetter(letter)
         }
         val wordAdapter = WordAdapter(letterHandler)
+        wordAdapter.setSentences(list)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = wordAdapter
+
+        game.setAllConcreteLetterFindListener {
+            game.changeHintAllConcreteLetter(list, it)
+            wordAdapter.notifyDataSetChanged()
+        }
 
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
         val keyBoard = KeyBoardClickListener {
             if (game.compareLetters(it)) {
                 val position= letterHandler.getCurrentPosition()
                 val oldLetter = list[position.first].letters[position.second]
-                val letter = oldLetter.copy(isFill = true, frequency = oldLetter.frequency-1)
+                val letter = oldLetter.copy(isFill = true)
                 list[position.first].letters[position.second] = letter
                 wordAdapter.notifyItemChanged(position.first)
             }
@@ -114,9 +124,5 @@ class GameFragment : Fragment() {
         ae.setOnClickListener(keyBoard)
         yu.setOnClickListener(keyBoard)
         ya.setOnClickListener(keyBoard)
-
-        wordAdapter.setSentences(list)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = wordAdapter
     }
 }
