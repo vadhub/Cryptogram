@@ -31,7 +31,7 @@ class GameFragment : Fragment() {
                 Game.StatusGame.WIN -> { Log.d("info", "ok")}
             }
         }
-        val sentence = "Упади семь раз и восемь раз поднимись"
+        val sentence = "УПАДИ СЕМЬ РАЗ И ВОСЕМЬ РАЗ ПОДНИМИСЬ"
         val list = game.sentenceMapToListWords(sentence)
         val letterHandler = LetterHandler { letter ->
             game.setLetter(letter)
@@ -42,8 +42,10 @@ class GameFragment : Fragment() {
         val keyBoard = KeyBoardClickListener {
             if (game.compareLetters(it)) {
                 val position= letterHandler.getCurrentPosition()
-                val letter = list[position.first].letters[position.second].copy(isFill = true)
+                val oldLetter = list[position.first].letters[position.second]
+                val letter = oldLetter.copy(isFill = true, frequency = oldLetter.frequency-1)
                 list[position.first].letters[position.second] = letter
+                wordAdapter.notifyItemChanged(position.first)
             }
             letterHandler.setToTextView(it)
         }

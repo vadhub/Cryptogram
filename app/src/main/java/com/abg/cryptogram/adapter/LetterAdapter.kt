@@ -40,7 +40,7 @@ class LetterAdapter(
                 text = ""
             }
             editLetter.text = text
-            hintNumber.text = letter.code.toString()
+            hintNumber.text = if (letter.frequency <= 1 && letter.isFill) "" else letter.code.toString()
         }
     }
 

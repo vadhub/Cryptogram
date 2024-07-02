@@ -6,7 +6,7 @@ import android.view.View.OnClickListener
 class KeyBoardClickListener(private val clickKeyBoard: (Char) -> Unit) : OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.letterA -> {clickKeyBoard.invoke('A')}
+            R.id.letterA -> {clickKeyBoard.invoke('А')}
             R.id.letterBlyat -> {clickKeyBoard.invoke('Б')}
             R.id.letterV -> {clickKeyBoard.invoke('В')}
             R.id.letterG -> {clickKeyBoard.invoke('Г')}

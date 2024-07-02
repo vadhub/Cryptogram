@@ -1,5 +1,6 @@
 package com.abg.cryptogram.model
 
+import android.util.Log
 import kotlin.random.Random
 
 class Game(private val gameStatus: (StatusGame) -> Unit) {
@@ -11,6 +12,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     private var hilth = 3
     private var letter = ' '
     private var notGuessed = 0
+    private var frequency = mutableMapOf<Char, Int>()
 
     fun setLetter(letter: Char) {
         this.letter = letter
@@ -36,18 +38,22 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
                     c = char
                     number = counter++
                     alphabet[c] = number
+                    frequency[c] = 1
                 } else {
                     number = alphabet[char]!!
+                    val freq = frequency[c]
+                    frequency[c] = (freq!! + 1)
                 }
                 val isFill = Random.nextBoolean()
                 if (!isFill) {
                     notGuessed++
                 }
-                letters.add(Letter(c, number, isFill))
+                letters.add(Letter(c, number, isFill, frequency[c]!!))
             }
             words.add(Word(letters))
             letters = mutableListOf()
         }
+        Log.d("info", frequency.toList().toTypedArray().contentToString())
         return words
     }
 
