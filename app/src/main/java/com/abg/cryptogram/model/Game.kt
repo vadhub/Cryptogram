@@ -1,6 +1,5 @@
 package com.abg.cryptogram.model
 
-import android.util.Log
 import com.abg.cryptogram.adapter.LetterAdapter
 import kotlin.random.Random
 

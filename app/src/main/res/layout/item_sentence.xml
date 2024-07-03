@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.recyclerview.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/recycler_letter"
-        tools:itemCount="10"
-        android:layout_gravity="center_horizontal"
-        tools:listitem="@layout/item_letter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recycler_letter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    tools:itemCount="10"
+    tools:listitem="@layout/item_letter"
+    android:layoutAnimation="@anim/layout_animation_fade_out"/>

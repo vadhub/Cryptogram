@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +30,10 @@ class GameFragment : Fragment() {
         val game = Game {
             when(it) {
                 Game.StatusGame.GAME_OVER -> { Log.d("info", "lol")}
-                Game.StatusGame.WIN -> { Log.d("info", "ok")}
+                Game.StatusGame.WIN -> {
+                    recyclerView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out))
+                    Log.d("info", "ok")
+                }
             }
         }
         val sentence = "УПАДИ/СЕМЬ  РАЗ /И  ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
@@ -42,6 +46,8 @@ class GameFragment : Fragment() {
         val wordAdapter = WordAdapter(letterHandler)
         wordAdapter.setSentences(list)
         recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.itemAnimator?.changeDuration = 0
         recyclerView.adapter = wordAdapter
 
         game.setAllConcreteLetterFindListener {
@@ -57,8 +63,10 @@ class GameFragment : Fragment() {
                 val letter = oldLetter.copy(isFill = true)
                 list[position.first].letters[position.second] = letter
                 wordAdapter.notifyItemChanged(position.first)
+                letterHandler.setToTextView(it, true)
+            } else {
+                letterHandler.setToTextView(it, false)
             }
-            letterHandler.setToTextView(it)
         }
         val a: TextView = keyBoardView.findViewById(R.id.letterA)
         val b: TextView = keyBoardView.findViewById(R.id.letterBlyat)

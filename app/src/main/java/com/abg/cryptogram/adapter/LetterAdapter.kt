@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -16,7 +17,7 @@ class LetterAdapter(
     private val parentPosition: Int,
     private val sentence: MutableList<Symbol>,
     private val letterHandler: LetterHandler
-) : Adapter<RecyclerView.ViewHolder>() {
+) : Adapter<ViewHolder>() {
 
     companion object {
         const val VIEW_TYPE_LETTER = 1

@@ -1,9 +1,12 @@
 package com.abg.cryptogram.model
 
 import android.content.Context
+import android.graphics.Color
 import android.widget.TextView
+import androidx.core.graphics.ColorUtils
 import com.abg.cryptogram.R
 import com.abg.cryptogram.adapter.LetterAdapter
+import kotlinx.coroutines.Delay
 
 class LetterHandler(private val selectLetter: (letter: Char) -> Unit) {
 
@@ -24,8 +27,12 @@ class LetterHandler(private val selectLetter: (letter: Char) -> Unit) {
 
     fun getCurrentPosition() = Pair(focusParentPosition, focusChildPosition)
 
-    fun setToTextView(char: Char) {
+    fun setToTextView(char: Char, isTrueLetter: Boolean) {
         editLetter?.text = char.toString()
+
+        if (!isTrueLetter) {
+            editLetter?.setTextColor(ColorUtils.blendARGB(Color.parseColor("#CCCCCC"), Color.parseColor("#FFFFFF"), 0.10F))
+        }
     }
 
     fun highlightText(currentPositionParent: Int, currentPositionChild: Int, currentHolder: LetterAdapter.LetterViewHolder, letter: Char) {
