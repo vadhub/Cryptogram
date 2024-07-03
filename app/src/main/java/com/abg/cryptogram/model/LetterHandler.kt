@@ -1,12 +1,11 @@
 package com.abg.cryptogram.model
 
+import android.animation.AnimatorInflater
 import android.content.Context
 import android.graphics.Color
 import android.widget.TextView
-import androidx.core.graphics.ColorUtils
 import com.abg.cryptogram.R
 import com.abg.cryptogram.adapter.LetterAdapter
-import kotlinx.coroutines.Delay
 
 class LetterHandler(private val selectLetter: (letter: Char) -> Unit) {
 
@@ -31,7 +30,9 @@ class LetterHandler(private val selectLetter: (letter: Char) -> Unit) {
         editLetter?.text = char.toString()
 
         if (!isTrueLetter) {
-            editLetter?.setTextColor(ColorUtils.blendARGB(Color.parseColor("#CCCCCC"), Color.parseColor("#FFFFFF"), 0.10F))
+            val colorChangeAnimation = AnimatorInflater.loadAnimator(editLetter?.context, R.animator.fade_out_with_color)
+            colorChangeAnimation.setTarget(editLetter)
+            colorChangeAnimation.start()
         }
     }
 
