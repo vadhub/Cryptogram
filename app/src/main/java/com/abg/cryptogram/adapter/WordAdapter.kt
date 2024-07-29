@@ -21,9 +21,11 @@ class WordAdapter(private val sentenceHandler: LetterHandler) :
     private var sentences: MutableList<Word> = mutableListOf()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setSentences(sentences: MutableList<Word>) {
-        this.sentences = sentences
-        notifyDataSetChanged()
+    fun setSentences(newWords: MutableList<Word>) {
+        val diffResult = DiffUtil.calculateDiff(WordDiffCallback(this.sentences, newWords))
+        this.sentences.clear()
+        this.sentences.addAll(newWords)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     inner class SentenceViewHolder(private val view: View) : ViewHolder(view) {
@@ -35,6 +37,20 @@ class WordAdapter(private val sentenceHandler: LetterHandler) :
             recyclerLetter.setHasFixedSize(true)
             recyclerLetter.layoutManager = LinearLayoutManager(view.context, HORIZONTAL, false)
             recyclerLetter.adapter = adapter
+        }
+    }
+
+    class WordDiffCallback(private val oldList: List<Word>, private val newList: List<Word>) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
 
