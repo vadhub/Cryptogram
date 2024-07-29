@@ -112,4 +112,17 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
             allConcreteLetterFindListener.invoke(letter)
         }
     }
+
+    fun getNextVoidPosition(sentences: MutableList<Word>): Triple<Int, Int, Symbol> {
+        for (i in sentences.indices) {
+            for (j in sentences[i].letters.indices) {
+                val symbol = sentences[i].letters[j]
+                if (!symbol.isFill) {
+                    return Triple(i, j, symbol)
+                }
+            }
+        }
+
+        return Triple(-1, -1, Symbol.empty())
+    }
 }

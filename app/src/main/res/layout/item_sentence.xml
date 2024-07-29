@@ -8,4 +8,4 @@
     android:layout_gravity="center_horizontal"
     tools:itemCount="10"
     tools:listitem="@layout/item_letter"
-    android:layoutAnimation="@anim/layout_animation_fade_out"/>
+    />
