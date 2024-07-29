@@ -11,9 +11,11 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abg.cryptogram.adapter.LetterAdapter
 import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.adapter.WordAdapter
 import com.abg.cryptogram.model.LetterHandler
+import com.abg.cryptogram.model.Word
 
 class GameFragment : Fragment() {
 
@@ -32,17 +34,12 @@ class GameFragment : Fragment() {
                 Game.StatusGame.GAME_OVER -> { Log.d("info", "lol")}
                 Game.StatusGame.WIN -> {
                     recyclerView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out))
-                    Log.d("info", "ok")
                 }
             }
         }
         val sentence = "УПАДИ/СЕМЬ  РАЗ /И  ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
         val list = game.sentenceMapToListWords(sentence)
-
-        Log.d("info", list.toTypedArray().contentToString())
-        val letterHandler = LetterHandler { letter ->
-            game.setLetter(letter)
-        }
+        val letterHandler = LetterHandler { letter -> game.setLetter(letter) }
         val wordAdapter = WordAdapter(letterHandler)
         wordAdapter.setSentences(list)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -52,20 +49,23 @@ class GameFragment : Fragment() {
 
         game.setAllConcreteLetterFindListener {
             game.changeHintAllConcreteLetter(list, it)
-            wordAdapter.notifyDataSetChanged()
+            wordAdapter.setSentences(list)
+            highlightNext(game, recyclerView, letterHandler, list)
         }
 
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
         val keyBoard = KeyBoardClickListener {
-            if (game.compareLetters(it)) {
+            val isTrue = game.compareLetters(it)
+            if (isTrue) {
                 val position= letterHandler.getCurrentPosition()
                 val oldLetter = list[position.first].letters[position.second]
                 val letter = oldLetter.copy(isFill = true)
                 list[position.first].letters[position.second] = letter
                 wordAdapter.notifyItemChanged(position.first)
-                letterHandler.setToTextView(it, true)
-            } else {
-                letterHandler.setToTextView(it, false)
+            }
+            letterHandler.setToTextView(it, isTrue)
+            if (isTrue) {
+                highlightNext(game, recyclerView, letterHandler, list)
             }
         }
         val a: TextView = keyBoardView.findViewById(R.id.letterA)
@@ -133,5 +133,21 @@ class GameFragment : Fragment() {
         ae.setOnClickListener(keyBoard)
         yu.setOnClickListener(keyBoard)
         ya.setOnClickListener(keyBoard)
+    }
+
+    private fun highlightNext(game: Game, recyclerView: RecyclerView, letterHandler: LetterHandler, sentences: MutableList<Word>) {
+        val positionWithVoid = game.getNextVoidPosition(sentences)
+        if (positionWithVoid.first != -1) {
+            val sentenceHolder: WordAdapter.SentenceViewHolder =
+                recyclerView.findViewHolderForLayoutPosition(positionWithVoid.first) as WordAdapter.SentenceViewHolder
+            val letterViewHolder: LetterAdapter.LetterViewHolder =
+                sentenceHolder.recyclerLetter.findViewHolderForLayoutPosition(positionWithVoid.second) as LetterAdapter.LetterViewHolder
+            letterHandler.highlightText(
+                positionWithVoid.first,
+                positionWithVoid.second,
+                letterViewHolder,
+                positionWithVoid.third.symbol
+            )
+        }
     }
 }

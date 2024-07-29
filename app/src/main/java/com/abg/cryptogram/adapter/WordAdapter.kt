@@ -28,7 +28,7 @@ class WordAdapter(private val sentenceHandler: LetterHandler) :
 
     inner class SentenceViewHolder(private val view: View) : ViewHolder(view) {
 
-        private val recyclerLetter: RecyclerView = view.findViewById(R.id.recycler_letter)
+        val recyclerLetter: RecyclerView = view.findViewById(R.id.recycler_letter)
 
         fun bind(sentence: Word) {
             val adapter = LetterAdapter(layoutPosition, sentence.letters, sentenceHandler)

@@ -5,13 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.cryptogram.R
-import com.abg.cryptogram.model.Symbol
 import com.abg.cryptogram.model.LetterHandler
+import com.abg.cryptogram.model.Symbol
 
 class LetterAdapter(
     private val parentPosition: Int,
@@ -54,7 +52,7 @@ class LetterAdapter(
 
     inner class SignViewHolder(view: View) : ViewHolder(view) {
 
-        val signText: TextView = view.findViewById(R.id.sign)
+        private val signText: TextView = view.findViewById(R.id.sign)
 
         @SuppressLint("SetTextI18n")
         fun bind(sign: Symbol) {
