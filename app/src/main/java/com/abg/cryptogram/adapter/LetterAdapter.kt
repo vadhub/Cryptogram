@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.cryptogram.R
@@ -18,7 +17,7 @@ class LetterAdapter(
     private val parentPosition: Int,
     private val sentence: MutableList<Symbol>,
     private val letterHandler: LetterHandler
-) : Adapter<RecyclerView.ViewHolder>() {
+) : Adapter<ViewHolder>() {
 
     companion object {
         const val VIEW_TYPE_LETTER = 1
@@ -64,7 +63,7 @@ class LetterAdapter(
 
     inner class SignViewHolder(view: View) : ViewHolder(view) {
 
-        val signText: TextView = view.findViewById(R.id.sign)
+        private val signText: TextView = view.findViewById(R.id.sign)
 
         @SuppressLint("SetTextI18n")
         fun bind(sign: Symbol) {

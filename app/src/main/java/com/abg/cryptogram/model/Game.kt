@@ -1,6 +1,5 @@
 package com.abg.cryptogram.model
 
-import android.util.Log
 import com.abg.cryptogram.adapter.LetterAdapter
 import kotlin.random.Random
 
@@ -114,6 +113,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         }
     }
 
+
     fun getSelectLetter(sentence: MutableList<Word>) : Pair<Int, Int> {
         for (i in 0..<sentence.size) {
             for (j in 0..<i-1) {
@@ -124,5 +124,18 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         }
 
         return Pair(-1, -1)
+
+    fun getNextVoidPosition(sentences: MutableList<Word>): Triple<Int, Int, Symbol> {
+        for (i in sentences.indices) {
+            for (j in sentences[i].letters.indices) {
+                val symbol = sentences[i].letters[j]
+                if (!symbol.isFill) {
+                    return Triple(i, j, symbol)
+                }
+            }
+        }
+
+        return Triple(-1, -1, Symbol.empty())
+
     }
 }
