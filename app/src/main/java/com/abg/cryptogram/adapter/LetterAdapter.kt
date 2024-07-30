@@ -11,13 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.cryptogram.R
-import com.abg.cryptogram.model.LetterHandler
 import com.abg.cryptogram.model.Symbol
 
 class LetterAdapter(
     private val parentPosition: Int,
     private val sentence: MutableList<Symbol>,
-    private val letterHandler: LetterHandler
 ) : Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -38,12 +36,7 @@ class LetterAdapter(
                 text = letter.symbol.toString()
             } else {
                 linearLayoutLetter.setOnClickListener {
-                    letterHandler.highlightText(
-                        parentPosition,
-                        layoutPosition,
-                        this,
-                        letter.symbol
-                    )
+
                 }
                 text = ""
             }

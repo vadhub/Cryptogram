@@ -1,6 +1,5 @@
 package com.abg.cryptogram.model
 
-import android.util.Log
 import com.abg.cryptogram.adapter.LetterAdapter
 import kotlin.random.Random
 
@@ -134,8 +133,8 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     }
 
     fun getNextNotFillLetter(list: MutableList<Word>) : Pair<Int, Int> {
-        for (i in 0..<list.size) {
-            for (j in 0..<i-1) {
+        for (i in 0 until list.size) {
+            for (j in 0 until list[i].letters.size) {
                 if (!list[i].letters[j].isFill) {
                     return Pair(i, j)
                 }
@@ -146,10 +145,21 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
 
     fun setNextSelect(list: MutableList<Word>) {
         val nextPosition = getNextNotFillLetter(list)
-        Log.d("@", nextPosition.toString())
-        val oldLetter = list[nextPosition.first].letters[nextPosition.second]
+        if (nextPosition.first!=-1&&nextPosition.second!=-1) {
+            setSelected(list, nextPosition)
+        }
+    }
+
+    fun setSelected(list: MutableList<Word>, position: Pair<Int, Int>) {
+        val oldLetter = list[position.first].letters[position.second]
         val newLetter = oldLetter.copy(isSelected = true)
-        list[nextPosition.first].letters[nextPosition.second] = newLetter
+        list[position.first].letters[position.second] = newLetter
         letter = newLetter.symbol
+    }
+
+    fun setFillLetter(list: MutableList<Word>, currentPosition: Pair<Int, Int>) {
+        val oldLetter = list[currentPosition.first].letters[currentPosition.second]
+        val letter = oldLetter.copy(isFill = true, isSelected = false)
+        list[currentPosition.first].letters[currentPosition.second] = letter
     }
 }
