@@ -35,6 +35,7 @@ class GameFragment : Fragment() {
         }
         val sentence = "УПАДИ/СЕМЬ  РАЗ/И  ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
         val list = game.sentenceMapToListWords(sentence)
+        Log.d("##", list.toTypedArray().contentToString())
         val letterHandler = LetterHandler { letter ->
             game.setLetter(letter)
         }
@@ -49,12 +50,13 @@ class GameFragment : Fragment() {
             wordAdapter.notifyDataSetChanged()
         }
 
+        val oldPosition = game.getSelectLetter(list)
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
         val keyBoard = KeyBoardClickListener {
-            val position = letterHandler.getCurrentPosition()
-            val oldLetter = list[position.first].letters[position.second]
             if (game.compareLetters(it)) {
-                val letter = oldLetter.copy(isFill = true)
+                val position = letterHandler.getCurrentPosition()
+                val oldLetter = list[position.first].letters[position.second]
+                val letter = oldLetter.copy(isFill = true, isSelected = false)
                 list[position.first].letters[position.second] = letter
                 wordAdapter.notifyItemChanged(position.first)
             }

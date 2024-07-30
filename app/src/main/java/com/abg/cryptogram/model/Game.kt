@@ -36,6 +36,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         val words: MutableList<Word> = mutableListOf()
         var letters: MutableList<Symbol> = mutableListOf()
         var counter = 1
+        var counterIsSelected = 1
         sentence.split("/").forEach { word ->
             word.forEach { char ->
                 if (char.isLetter()) {
@@ -63,8 +64,9 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
 
                     if (!isFill) {
                         notGuessed++
+                        counterIsSelected++
                     }
-                    letters.add(Symbol(c, number, isFill, viewType = LetterAdapter.VIEW_TYPE_LETTER, isSelected = !isFill && counter == 2 /* first empty letter is select */))
+                    letters.add(Symbol(c, number, isFill, viewType = LetterAdapter.VIEW_TYPE_LETTER, isSelected = !isFill && counterIsSelected == 2 /* first empty letter is select */))
                 } else {
                     letters.add(Symbol(char, -1, isFill = true, viewType = LetterAdapter.VIEW_TYPE_SIGN))
                 }
