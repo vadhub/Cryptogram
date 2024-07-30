@@ -64,7 +64,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
                     if (!isFill) {
                         notGuessed++
                     }
-                    letters.add(Symbol(c, number, isFill, viewType = LetterAdapter.VIEW_TYPE_LETTER))
+                    letters.add(Symbol(c, number, isFill, viewType = LetterAdapter.VIEW_TYPE_LETTER, isSelected = !isFill && counter == 2 /* first empty letter is select */))
                 } else {
                     letters.add(Symbol(char, -1, isFill = true, viewType = LetterAdapter.VIEW_TYPE_SIGN))
                 }
@@ -112,5 +112,17 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         if (count == 0) {
             allConcreteLetterFindListener.invoke(letter)
         }
+    }
+
+    fun getSelectLetter(sentence: MutableList<Word>) : Pair<Int, Int> {
+        for (i in 0..<sentence.size) {
+            for (j in 0..<i-1) {
+                if (sentence[i].letters[j].isSelected) {
+                    return Pair(i, j)
+                }
+            }
+        }
+
+        return Pair(-1, -1)
     }
 }

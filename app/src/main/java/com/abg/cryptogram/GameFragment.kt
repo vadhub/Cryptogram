@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.adapter.WordAdapter
 import com.abg.cryptogram.model.LetterHandler
+import com.abg.cryptogram.model.Word
 
 class GameFragment : Fragment() {
 
@@ -32,13 +33,12 @@ class GameFragment : Fragment() {
                 Game.StatusGame.WIN -> { Log.d("info", "ok")}
             }
         }
-        val sentence = "УПАДИ/СЕМЬ  РАЗ /И  ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
+        val sentence = "УПАДИ/СЕМЬ  РАЗ/И  ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
         val list = game.sentenceMapToListWords(sentence)
-
-        Log.d("info", list.toTypedArray().contentToString())
         val letterHandler = LetterHandler { letter ->
             game.setLetter(letter)
         }
+
         val wordAdapter = WordAdapter(letterHandler)
         wordAdapter.setSentences(list)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -51,15 +51,17 @@ class GameFragment : Fragment() {
 
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
         val keyBoard = KeyBoardClickListener {
+            val position = letterHandler.getCurrentPosition()
+            val oldLetter = list[position.first].letters[position.second]
             if (game.compareLetters(it)) {
-                val position= letterHandler.getCurrentPosition()
-                val oldLetter = list[position.first].letters[position.second]
                 val letter = oldLetter.copy(isFill = true)
                 list[position.first].letters[position.second] = letter
                 wordAdapter.notifyItemChanged(position.first)
             }
             letterHandler.setToTextView(it)
         }
+
+
         val a: TextView = keyBoardView.findViewById(R.id.letterA)
         val b: TextView = keyBoardView.findViewById(R.id.letterBlyat)
         val v: TextView = keyBoardView.findViewById(R.id.letterV)

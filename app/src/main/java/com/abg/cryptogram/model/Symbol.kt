@@ -5,5 +5,6 @@ data class Symbol(
     val code: Int,
     val isFill: Boolean,
     var hintDestroy: Boolean = false,
-    val viewType: Int
+    val viewType: Int,
+    val isSelected: Boolean = false
 )
