@@ -50,15 +50,19 @@ class GameFragment : Fragment() {
             wordAdapter.notifyDataSetChanged()
         }
 
-        val oldPosition = game.getSelectLetter(list)
+        var oldPosition = game.getNextNotFillLetter(list)
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
         val keyBoard = KeyBoardClickListener {
             if (game.compareLetters(it)) {
-                val position = letterHandler.getCurrentPosition()
-                val oldLetter = list[position.first].letters[position.second]
+                val currentPosition = game.getSelectLetter(list)
+                Log.d("##", list.toTypedArray().contentToString())
+                Log.d("@gg", currentPosition.toString())
+                val oldLetter = list[currentPosition.first].letters[currentPosition.second]
                 val letter = oldLetter.copy(isFill = true, isSelected = false)
-                list[position.first].letters[position.second] = letter
-                wordAdapter.notifyItemChanged(position.first)
+                list[currentPosition.first].letters[currentPosition.second] = letter
+                wordAdapter.notifyItemChanged(currentPosition.first)
+                game.setNextSelect(list)
+                wordAdapter.setSentences(list)
             }
             letterHandler.setToTextView(it)
         }

@@ -66,6 +66,11 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
                         notGuessed++
                         counterIsSelected++
                     }
+
+                    if (!isFill && counterIsSelected == 2) {
+                        letter = c
+                    }
+
                     letters.add(Symbol(c, number, isFill, viewType = LetterAdapter.VIEW_TYPE_LETTER, isSelected = !isFill && counterIsSelected == 2 /* first empty letter is select */))
                 } else {
                     letters.add(Symbol(char, -1, isFill = true, viewType = LetterAdapter.VIEW_TYPE_SIGN))
@@ -116,15 +121,35 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         }
     }
 
-    fun getSelectLetter(sentence: MutableList<Word>) : Pair<Int, Int> {
-        for (i in 0..<sentence.size) {
-            for (j in 0..<i-1) {
-                if (sentence[i].letters[j].isSelected) {
+    fun getSelectLetter(list: MutableList<Word>): Pair<Int, Int> {
+        for (i in 0 until list.size) {
+            for (j in 0 until list[i].letters.size) {
+                if (list[i].letters.size > j && list[i].letters[j].isSelected) {
                     return Pair(i, j)
                 }
             }
         }
 
         return Pair(-1, -1)
+    }
+
+    fun getNextNotFillLetter(list: MutableList<Word>) : Pair<Int, Int> {
+        for (i in 0..<list.size) {
+            for (j in 0..<i-1) {
+                if (!list[i].letters[j].isFill) {
+                    return Pair(i, j)
+                }
+            }
+        }
+        return Pair(-1, -1)
+    }
+
+    fun setNextSelect(list: MutableList<Word>) {
+        val nextPosition = getNextNotFillLetter(list)
+        Log.d("@", nextPosition.toString())
+        val oldLetter = list[nextPosition.first].letters[nextPosition.second]
+        val newLetter = oldLetter.copy(isSelected = true)
+        list[nextPosition.first].letters[nextPosition.second] = newLetter
+        letter = newLetter.symbol
     }
 }
