@@ -8,9 +8,10 @@ data class Symbol(
     val isFill: Boolean,
     var hintDestroy: Boolean = false,
     val viewType: Int,
-    val id: Int = UUID.randomUUID().hashCode()
+    val isSelected: Boolean = false
+)
 ) {
     companion object {
         fun empty() = Symbol('-', -1, false, false, -1)
     }
-}
+

@@ -1,9 +1,11 @@
 package com.abg.cryptogram.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -25,17 +27,16 @@ class LetterAdapter(
     inner class LetterViewHolder(view: View) : ViewHolder(view) {
 
         val editLetter: TextView = view.findViewById(R.id.editLetter)
+        val linearLayoutLetter: LinearLayout = view.findViewById(R.id.letter)
         private val hintNumber: TextView = view.findViewById(R.id.hintNumber)
 
         fun bind(letter: Symbol) {
-
             val text: String
-
             if (letter.isFill) {
                 editLetter.isClickable = false
                 text = letter.symbol.toString()
             } else {
-                editLetter.setOnClickListener {
+                linearLayoutLetter.setOnClickListener {
                     letterHandler.highlightText(
                         parentPosition,
                         layoutPosition,
@@ -45,7 +46,17 @@ class LetterAdapter(
                 }
                 text = ""
             }
+            
             editLetter.text = text
+            showHint(hintNumber, letter)
+            updateFocusView(editLetter.context, letter.isSelected, editLetter)
+        }
+
+        private fun updateFocusView(context: Context, isSelect: Boolean, editLetter: TextView) {
+            editLetter.background = if (isSelect) context.getDrawable(R.drawable.border) else null
+        }
+
+        private fun showHint(hintNumber: TextView, letter: Symbol) {
             hintNumber.text = if (!letter.hintDestroy) letter.code.toString() else ""
         }
     }

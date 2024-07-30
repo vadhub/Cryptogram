@@ -63,7 +63,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
                     if (!isFill) {
                         notGuessed++
                     }
-                    letters.add(Symbol(c, number, isFill, viewType = LetterAdapter.VIEW_TYPE_LETTER))
+                    letters.add(Symbol(c, number, isFill, viewType = LetterAdapter.VIEW_TYPE_LETTER, isSelected = !isFill && counter == 2 /* first empty letter is select */))
                 } else {
                     letters.add(Symbol(char, -1, isFill = true, viewType = LetterAdapter.VIEW_TYPE_SIGN))
                 }
@@ -113,6 +113,18 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         }
     }
 
+
+    fun getSelectLetter(sentence: MutableList<Word>) : Pair<Int, Int> {
+        for (i in 0..<sentence.size) {
+            for (j in 0..<i-1) {
+                if (sentence[i].letters[j].isSelected) {
+                    return Pair(i, j)
+                }
+            }
+        }
+
+        return Pair(-1, -1)
+
     fun getNextVoidPosition(sentences: MutableList<Word>): Triple<Int, Int, Symbol> {
         for (i in sentences.indices) {
             for (j in sentences[i].letters.indices) {
@@ -124,5 +136,6 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         }
 
         return Triple(-1, -1, Symbol.empty())
+
     }
 }
