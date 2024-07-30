@@ -16,6 +16,7 @@ import com.abg.cryptogram.model.Symbol
 class LetterAdapter(
     private val parentPosition: Int,
     private val sentence: MutableList<Symbol>,
+    private val onClickItemListener: (Pair<Int,Int>) -> Unit
 ) : Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -36,7 +37,7 @@ class LetterAdapter(
                 text = letter.symbol.toString()
             } else {
                 linearLayoutLetter.setOnClickListener {
-
+                    onClickItemListener.invoke(Pair(parentPosition, layoutPosition))
                 }
                 text = ""
             }

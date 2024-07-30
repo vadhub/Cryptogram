@@ -162,4 +162,11 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         val letter = oldLetter.copy(isFill = true, isSelected = false)
         list[currentPosition.first].letters[currentPosition.second] = letter
     }
+
+    fun setNotSelected(list: MutableList<Word>) {
+        val currentPosition = getSelectLetter(list)
+        val oldLetter = list[currentPosition.first].letters[currentPosition.second]
+        val letter = oldLetter.copy(isSelected = false)
+        list[currentPosition.first].letters[currentPosition.second] = letter
+    }
 }

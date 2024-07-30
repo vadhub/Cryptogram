@@ -32,12 +32,19 @@ class GameFragment : Fragment() {
                 Game.StatusGame.WIN -> { Log.d("info", "ok")}
             }
         }
+
         val sentence = "УПАДИ/СЕМЬ  РАЗ/И  ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
         val list = game.sentenceMapToListWords(sentence)
         Log.d("##", list.toTypedArray().contentToString())
 
         val wordAdapter = WordAdapter()
         wordAdapter.setSentences(list)
+        wordAdapter.setOnClickItemListener {
+            game.setNotSelected(list)
+            game.setSelected(list, it)
+            wordAdapter.setSentences(list)
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = wordAdapter
 

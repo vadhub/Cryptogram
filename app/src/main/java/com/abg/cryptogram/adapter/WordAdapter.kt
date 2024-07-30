@@ -11,10 +11,15 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.cryptogram.R
 import com.abg.cryptogram.model.Word
 
-class WordAdapter() :
+class WordAdapter:
     Adapter<WordAdapter.SentenceViewHolder>() {
 
     private var sentences: MutableList<Word> = mutableListOf()
+    private var onClickItemListener: (Pair<Int,Int>) -> Unit = {}
+
+    fun setOnClickItemListener(onClickItemListener: (Pair<Int,Int>) -> Unit) {
+        this.onClickItemListener = onClickItemListener
+    }
 
     fun setSentences(sentences: MutableList<Word>) {
         this.sentences = sentences
@@ -26,7 +31,7 @@ class WordAdapter() :
         private val recyclerLetter: RecyclerView = view.findViewById(R.id.recycler_letter)
 
         fun bind(sentence: Word) {
-            val adapter = LetterAdapter(layoutPosition, sentence.letters)
+            val adapter = LetterAdapter(layoutPosition, sentence.letters, onClickItemListener)
             recyclerLetter.layoutManager = LinearLayoutManager(view.context, HORIZONTAL, false)
             recyclerLetter.adapter = adapter
         }
