@@ -36,24 +36,22 @@ class GameFragment : Fragment() {
         val livesView: View = view.findViewById(R.id.lives)
         val lives = Lives()
         lives.setLivesView(livesView)
-        val sentence = "УПАДИ/СЕМЬ  РАЗ/И  ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
+        val sentence = "ЗА СВОЮ /КАРЬЕРУ Я /ПРОПУСТИЛ /БОЛЕЕ /9000 /БРОСКОВ, /ПРОИГРАЛ /ПОЧТИ 300 /ИГР. 26 /РАЗ МНЕ /ДОВЕРЯЛИ /СДЕЛАТЬ /ФИНАЛЬНЫЙ /ПОБЕДНЫЙ /БРОСОК, И /Я /ПРОМАХИВАЛСЯ. /Я ТЕРПЕЛ /ПОРАЖЕНИЯ /СНОВА, И /СНОВА, И /СНОВА. И /ИМЕННО /ПОЭТОМУ Я /ДОБИЛСЯ /УСПЕХА"//"СВОИМ /УСПЕХОМ Я /ОБЯЗАНА /ТОМУ, ЧТО /НИКОГДА /НЕ /ОПРАВДЫВАЛАСЬ /И НЕ /ПРИНИМАЛА /ОПРАВДАНИЙ /ОТ ДРУГИХ"//"УПАДИ/СЕМЬ  РАЗ/И  ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
         val author = "OG budda ©"
         val game = Game {
             when(it) {
                 Game.StatusGame.GAME_OVER -> {
                     navigator.startFragment(LostFragment())
-                    Log.d("info", "lol")
                 }
                 Game.StatusGame.WIN -> {
                     recyclerView.animate().alpha(0f).setDuration(200).withEndAction {
                         val fragmentWin = FragmentWin()
                         fragmentWin.arguments = Bundle().apply {
-                            putString("quote", sentence.replace('/', ' '))
+                            putString("quote", sentence.replace('/', ' ').lowercase()[0].uppercase())
                             putString("author", author)
                         }
                         navigator.startFragment(fragmentWin)
                     }.start()
-                    Log.d("info", "ok")
                 }
             }
         }

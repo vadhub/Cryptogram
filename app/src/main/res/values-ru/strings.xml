@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cryptogram</string>
+    <string name="next">далее</string>
+    <string name="again">еще разок?</string>
+    <string name="lost">ЛОЛ</string>
+
+</resources>
