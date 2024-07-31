@@ -18,6 +18,7 @@
             android:id="@+id/sentence_recycler"
             tools:itemCount="1"
             tools:listitem="@layout/item_sentence"
+            android:layoutAnimation="@anim/layout_animation_fade_out"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,5 +35,12 @@
             android:id="@+id/keyboardView"
             layout="@layout/keyboard" />
     </FrameLayout>
+
+    <View
+        android:id="@+id/wrong"
+        android:alpha="0"
+        android:background="@color/gray_alpha_20"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
