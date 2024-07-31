@@ -8,10 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.adapter.WordAdapter
+import com.abg.cryptogram.data.SaveConfig
+import com.abg.cryptogram.model.MegaParser
 
 class GameFragment : Fragment() {
 
@@ -36,19 +40,22 @@ class GameFragment : Fragment() {
         val livesView: View = view.findViewById(R.id.lives)
         val lives = Lives()
         lives.setLivesView(livesView)
-        val sentence = "ЗА СВОЮ /КАРЬЕРУ Я /ПРОПУСТИЛ /БОЛЕЕ /9000 /БРОСКОВ, /ПРОИГРАЛ /ПОЧТИ 300 /ИГР. 26 /РАЗ МНЕ /ДОВЕРЯЛИ /СДЕЛАТЬ /ФИНАЛЬНЫЙ /ПОБЕДНЫЙ /БРОСОК, И /Я /ПРОМАХИВАЛСЯ. /Я ТЕРПЕЛ /ПОРАЖЕНИЯ /СНОВА, И /СНОВА, И /СНОВА. И /ИМЕННО /ПОЭТОМУ Я /ДОБИЛСЯ /УСПЕХА"//"СВОИМ /УСПЕХОМ Я /ОБЯЗАНА /ТОМУ, ЧТО /НИКОГДА /НЕ /ОПРАВДЫВАЛАСЬ /И НЕ /ПРИНИМАЛА /ОПРАВДАНИЙ /ОТ ДРУГИХ" "УПАДИ/СЕМЬ  РАЗ/И  ВОСЕМЬ/РАЗ/ПОДНИМИСЬ"
-        val author = "OG budda ©"
+        val saveConfig = SaveConfig(requireContext())
+        val quoteViewModelFactory = QuoteViewModelFactory(context?.assets?.open("test.csv")!!)
+        val quoteViewModel: QuoteViewModel = ViewModelProvider(this, quoteViewModelFactory)[QuoteViewModel::class.java]
+        val quote = quoteViewModel.getQuote(saveConfig.getLevel())
         val game = Game {
             when(it) {
                 Game.StatusGame.GAME_OVER -> {
                     navigator.startFragment(LostFragment())
                 }
                 Game.StatusGame.WIN -> {
+                    saveConfig.saveLevel(saveConfig.getLevel()+1)
                     recyclerView.animate().alpha(0f).setDuration(200).withEndAction {
                         val fragmentWin = FragmentWin()
                         fragmentWin.arguments = Bundle().apply {
-                            putString("quote", sentence.replace('/', ' ').lowercase()[0].uppercase())
-                            putString("author", author)
+                            putString("quote", quote.quote.replace('/', ' ').lowercase())
+                            putString("author", quote.author)
                         }
                         navigator.startFragment(fragmentWin)
                     }.start()
@@ -56,7 +63,7 @@ class GameFragment : Fragment() {
             }
         }
 
-        val list = game.sentenceMapToListWords(sentence)
+        val list = game.sentenceMapToListWords(MegaParser.insertSlashes(quote.quote.toUpperCase()))
         Log.d("##", list.toTypedArray().contentToString())
 
         val wordAdapter = WordAdapter()

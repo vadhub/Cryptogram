@@ -14,9 +14,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, GameFragment()).commit()
-        val parseCSV = ParseCSV()
-        val quotes: List<Quote> = parseCSV.readCsv(assets.open("test.csv"))
-        quotes.forEach { Log.d("##", MegaParser.insertSlashes(it.quote).uppercase()) }
     }
 
     override fun startFragment(fragment: Fragment) {
