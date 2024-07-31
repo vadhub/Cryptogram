@@ -16,6 +16,11 @@ public class MegaParser {
             }
         }
 
-        return result.toString().trim();
+        String resultStr = result.toString().trim();
+        if (resultStr.charAt(0)=='/') {
+           return resultStr.substring(1);
+        }
+
+        return resultStr;
     }
 }
