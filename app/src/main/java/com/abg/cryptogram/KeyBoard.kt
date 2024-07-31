@@ -1,6 +1,5 @@
 package com.abg.cryptogram
 
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
 import android.view.View
 import android.widget.TextView

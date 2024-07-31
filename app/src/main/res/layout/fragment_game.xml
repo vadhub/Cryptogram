@@ -8,12 +8,24 @@
     tools:context=".GameFragment">
 
     <FrameLayout
+        android:id="@+id/livesWrap"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/lives"
+            layout="@layout/lives" />
+    </FrameLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/keyboardWrap"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/livesWrap">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sentence_recycler"
             tools:itemCount="1"

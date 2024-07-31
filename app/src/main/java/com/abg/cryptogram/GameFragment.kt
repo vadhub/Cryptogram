@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.ancestors
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +30,9 @@ class GameFragment : Fragment() {
         val keyBoard = KeyBoard()
         val recyclerView: RecyclerView = view.findViewById(R.id.sentence_recycler)
         val wrongView: View = view.findViewById(R.id.wrong)
+        val livesView: View = view.findViewById(R.id.lives)
+        val lives = Lives()
+        lives.setLivesView(livesView)
         val animationFadeOut = AnimationUtils.loadAnimation(context, R.anim.fade_out)
         val game = Game {
             when(it) {
@@ -70,6 +74,7 @@ class GameFragment : Fragment() {
                 game.setNextSelect(list)
                 wordAdapter.setSentences(list)
             } else {
+                lives.setLives(game.minusHilth())
                 wrongView.animate()
                     .setStartDelay(100)
                     .alpha(1f)

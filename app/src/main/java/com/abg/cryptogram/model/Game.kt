@@ -24,11 +24,12 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         this.letter = letter
     }
 
-    fun setHilth(hilth: Int) {
+    fun minusHilth() : Int {
+        hilth -= 1
         if (hilth <= 0) {
             gameStatus.invoke(StatusGame.GAME_OVER)
         }
-        this.hilth = hilth
+        return hilth
     }
 
     /**
