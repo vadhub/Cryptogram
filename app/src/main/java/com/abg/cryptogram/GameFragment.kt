@@ -55,21 +55,21 @@ class GameFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = wordAdapter
 
-        game.setAllConcreteLetterFindListener {
-            game.changeCodeVisibleAllConcreteLetter(list, it)
+        game.setAllConcreteLetterFindListener { letter, textView ->
+            game.changeCodeVisibleAllConcreteLetter(list, letter)
+            keyBoard.killKey(textView)
             wordAdapter.notifyDataSetChanged()
         }
 
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
-        val keyBoardListener = KeyBoardClickListener {
-            if (game.compareLetters(it)) {
+        val keyBoardListener = KeyBoardClickListener { textview, letter ->
+            if (game.compareLetters(textview, letter)) {
                 val currentPosition = game.getSelectLetter(list)
                 game.setFillLetter(list, currentPosition)
                 wordAdapter.notifyItemChanged(currentPosition.first)
                 game.setNextSelect(list)
                 wordAdapter.setSentences(list)
             } else {
-
                 wrongView.animate()
                     .setStartDelay(100)
                     .alpha(1f)

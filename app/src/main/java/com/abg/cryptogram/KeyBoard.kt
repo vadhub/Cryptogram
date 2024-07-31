@@ -1,5 +1,7 @@
 package com.abg.cryptogram
 
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.TransitionDrawable
 import android.view.View
 import android.widget.TextView
 
@@ -106,5 +108,21 @@ class KeyBoard {
         ae.setOnClickListener(keyBoard)
         yu.setOnClickListener(keyBoard)
         ya.setOnClickListener(keyBoard)
+    }
+
+    fun killKey(textView: TextView) {
+        val transition = TransitionDrawable(arrayOf(textView.context.getDrawable(R.drawable.empty), textView.context.getDrawable(R.drawable.border_right)) )
+        textView.setOnClickListener {  }
+        textView.isClickable = false
+        textView.animate()
+            .setStartDelay(1000) //prevent the animation from starting
+            .scaleY(1.5f)
+            .scaleX(1.5f)
+            .setDuration(200)
+            .setStartDelay(0)
+            .withEndAction{
+                textView.animate().scaleY(1f).scaleX(1f)
+                textView.background = transition
+            }.start()
     }
 }

@@ -1,5 +1,6 @@
 package com.abg.cryptogram.model
 
+import android.widget.TextView
 import com.abg.cryptogram.adapter.LetterAdapter
 import kotlin.random.Random
 
@@ -9,13 +10,13 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         WIN, GAME_OVER
     }
 
-    private var allConcreteLetterFindListener: (letter: Char) -> Unit = {}
+    private var allConcreteLetterFindListener: (letter: Char, TextView) -> Unit = {_,_ ->}
     private var hilth = 3
     private var letter = ' '
     private var notGuessed = 0
     private var frequency = mutableMapOf<Char, Int>()
 
-    fun setAllConcreteLetterFindListener(allConcreteLetterFind: (letter: Char) -> Unit) {
+    fun setAllConcreteLetterFindListener(allConcreteLetterFind: (letter: Char, TextView) -> Unit) {
         this.allConcreteLetterFindListener = allConcreteLetterFind
     }
 
@@ -31,7 +32,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     }
 
     /**
-     * Algorithm - MONSTER. for parse from string to list of words
+     * Algorithm - MONSTER OF STRINGS. for parse string to list of words
      */
     fun sentenceMapToListWords(sentence: String): MutableList<Word> {
         val alphabet: MutableMap<Char, Int> = mutableMapOf()
@@ -85,13 +86,13 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         return words
     }
 
-    fun compareLetters(candidate: Char): Boolean {
+    fun compareLetters(textView: TextView, candidate: Char): Boolean {
         if (candidate == letter) {
             notGuessed--
             val count = frequency[candidate]
             if (count != null) {
                 frequency[candidate] = count - 1
-                allConcreteLetterFind(frequency[candidate]!!, letter)
+                allConcreteLetterFind(frequency[candidate]!!, letter, textView)
             }
             if (notGuessed == 0) {
                 gameStatus.invoke(StatusGame.WIN)
@@ -120,9 +121,9 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         }
     }
 
-    private fun allConcreteLetterFind(count: Int, letter: Char) {
+    private fun allConcreteLetterFind(count: Int, letter: Char, textView: TextView) {
         if (count == 0) {
-            allConcreteLetterFindListener.invoke(letter)
+            allConcreteLetterFindListener.invoke(letter, textView)
         }
     }
 
