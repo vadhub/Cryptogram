@@ -4,7 +4,7 @@ data class Symbol(
     val symbol: Char,
     val code: Int,
     val isFill: Boolean,
-    var hintDestroy: Boolean = false,
+    var isShowCode: Boolean = false,
     val viewType: Int,
     val isSelected: Boolean = false
 )

@@ -30,6 +30,9 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         this.hilth = hilth
     }
 
+    /**
+     * Algorithm - MONSTER. for parse from string to list of words
+     */
     fun sentenceMapToListWords(sentence: String): MutableList<Word> {
         val alphabet: MutableMap<Char, Int> = mutableMapOf()
         val words: MutableList<Word> = mutableListOf()
@@ -98,19 +101,22 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         return false
     }
 
-    fun changeHintAllConcreteLetter(words: MutableList<Word>, letter: Char) {
+    fun changeCodeVisibleAllConcreteLetter(words: MutableList<Word>, letter: Char) {
         words.forEach { word ->
             word.letters.forEach {
                 if (it.symbol == letter) {
-                    it.hintDestroy = true
+                    it.isShowCode = true
                 }
             }
         }
     }
 
+    /**
+     * need for clear hint on all guessed letter
+     */
     private fun clearZeroFrequency(words: MutableList<Word>) {
         frequency.filter { it.value == 0 }.forEach {
-            changeHintAllConcreteLetter(words,it.key)
+            changeCodeVisibleAllConcreteLetter(words,it.key)
         }
     }
 

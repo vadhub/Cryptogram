@@ -28,7 +28,7 @@ class LetterAdapter(
 
         val editLetter: TextView = view.findViewById(R.id.editLetter)
         val linearLayoutLetter: LinearLayout = view.findViewById(R.id.letter)
-        private val hintNumber: TextView = view.findViewById(R.id.hintNumber)
+        private val codeTextView: TextView = view.findViewById(R.id.codeTextView)
 
         fun bind(letter: Symbol) {
             val text: String
@@ -43,7 +43,7 @@ class LetterAdapter(
             }
             
             editLetter.text = text
-            showHint(hintNumber, letter)
+            showCode(codeTextView, letter)
             updateFocusView(editLetter.context, letter.isSelected, editLetter)
         }
 
@@ -51,8 +51,8 @@ class LetterAdapter(
             editLetter.background = if (isSelect) context.getDrawable(R.drawable.border) else null
         }
 
-        private fun showHint(hintNumber: TextView, letter: Symbol) {
-            hintNumber.text = if (!letter.hintDestroy) letter.code.toString() else ""
+        private fun showCode(codeTextView: TextView, letter: Symbol) {
+            codeTextView.text = if (!letter.isShowCode) letter.code.toString() else ""
         }
     }
 

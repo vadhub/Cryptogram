@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.adapter.WordAdapter
-import com.abg.cryptogram.model.Word
 
 class GameFragment : Fragment() {
 
@@ -49,7 +48,7 @@ class GameFragment : Fragment() {
         recyclerView.adapter = wordAdapter
 
         game.setAllConcreteLetterFindListener {
-            game.changeHintAllConcreteLetter(list, it)
+            game.changeCodeVisibleAllConcreteLetter(list, it)
             wordAdapter.notifyDataSetChanged()
         }
 
