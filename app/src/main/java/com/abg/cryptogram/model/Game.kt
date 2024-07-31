@@ -1,5 +1,6 @@
 package com.abg.cryptogram.model
 
+import android.widget.TextView
 import com.abg.cryptogram.adapter.LetterAdapter
 import kotlin.random.Random
 
@@ -9,13 +10,13 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         WIN, GAME_OVER
     }
 
-    private var allConcreteLetterFindListener: (letter: Char) -> Unit = {}
+    private var allConcreteLetterFindListener: (letter: Char, TextView) -> Unit = {_,_ ->}
     private var hilth = 3
     private var letter = ' '
     private var notGuessed = 0
     private var frequency = mutableMapOf<Char, Int>()
 
-    fun setAllConcreteLetterFindListener(allConcreteLetterFind: (letter: Char) -> Unit) {
+    fun setAllConcreteLetterFindListener(allConcreteLetterFind: (letter: Char, TextView) -> Unit) {
         this.allConcreteLetterFindListener = allConcreteLetterFind
     }
 
@@ -23,18 +24,23 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         this.letter = letter
     }
 
-    fun setHilth(hilth: Int) {
+    fun minusHilth() : Int {
+        hilth -= 1
         if (hilth <= 0) {
             gameStatus.invoke(StatusGame.GAME_OVER)
         }
-        this.hilth = hilth
+        return hilth
     }
 
+    /**
+     * Algorithm - MONSTER OF STRINGS. for parse string to list of words
+     */
     fun sentenceMapToListWords(sentence: String): MutableList<Word> {
         val alphabet: MutableMap<Char, Int> = mutableMapOf()
         val words: MutableList<Word> = mutableListOf()
         var letters: MutableList<Symbol> = mutableListOf()
         var counter = 1
+        var counterIsSelected = 1
         sentence.split("/").forEach { word ->
             word.forEach { char ->
                 if (char.isLetter()) {
@@ -62,8 +68,14 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
 
                     if (!isFill) {
                         notGuessed++
+                        counterIsSelected++
                     }
-                    letters.add(Symbol(c, number, isFill, viewType = LetterAdapter.VIEW_TYPE_LETTER, isSelected = !isFill && counter == 2 /* first empty letter is select */))
+
+                    if (!isFill && counterIsSelected == 2) {
+                        letter = c
+                    }
+
+                    letters.add(Symbol(c, number, isFill, viewType = LetterAdapter.VIEW_TYPE_LETTER, isSelected = !isFill && counterIsSelected == 2 /* first empty letter is select */))
                 } else {
                     letters.add(Symbol(char, -1, isFill = true, viewType = LetterAdapter.VIEW_TYPE_SIGN))
                 }
@@ -75,13 +87,13 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         return words
     }
 
-    fun compareLetters(candidate: Char): Boolean {
+    fun compareLetters(textView: TextView, candidate: Char): Boolean {
         if (candidate == letter) {
             notGuessed--
             val count = frequency[candidate]
             if (count != null) {
                 frequency[candidate] = count - 1
-                allConcreteLetterFind(frequency[candidate]!!, letter)
+                allConcreteLetterFind(frequency[candidate]!!, letter, textView)
             }
             if (notGuessed == 0) {
                 gameStatus.invoke(StatusGame.WIN)
@@ -91,51 +103,78 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         return false
     }
 
-    fun changeHintAllConcreteLetter(words: MutableList<Word>, letter: Char) {
+    fun changeCodeVisibleAllConcreteLetter(words: MutableList<Word>, letter: Char) {
         words.forEach { word ->
             word.letters.forEach {
                 if (it.symbol == letter) {
-                    it.hintDestroy = true
+                    it.isShowCode = true
                 }
             }
         }
     }
 
+    /**
+     * need for clear hint on all guessed letter
+     */
     private fun clearZeroFrequency(words: MutableList<Word>) {
         frequency.filter { it.value == 0 }.forEach {
-            changeHintAllConcreteLetter(words,it.key)
+            changeCodeVisibleAllConcreteLetter(words,it.key)
         }
     }
 
-    private fun allConcreteLetterFind(count: Int, letter: Char) {
+    private fun allConcreteLetterFind(count: Int, letter: Char, textView: TextView) {
         if (count == 0) {
-            allConcreteLetterFindListener.invoke(letter)
+            allConcreteLetterFindListener.invoke(letter, textView)
         }
     }
 
-
-    fun getSelectLetter(sentence: MutableList<Word>) : Pair<Int, Int> {
-        for (i in 0..<sentence.size) {
-            for (j in 0..<i-1) {
-                if (sentence[i].letters[j].isSelected) {
+    fun getSelectLetter(list: MutableList<Word>): Pair<Int, Int> {
+        for (i in 0 until list.size) {
+            for (j in 0 until list[i].letters.size) {
+                if (list[i].letters.size > j && list[i].letters[j].isSelected) {
                     return Pair(i, j)
                 }
             }
         }
 
         return Pair(-1, -1)
+    }
 
-    fun getNextVoidPosition(sentences: MutableList<Word>): Triple<Int, Int, Symbol> {
-        for (i in sentences.indices) {
-            for (j in sentences[i].letters.indices) {
-                val symbol = sentences[i].letters[j]
-                if (!symbol.isFill) {
-                    return Triple(i, j, symbol)
+    fun getNextNotFillLetter(list: MutableList<Word>) : Pair<Int, Int> {
+        for (i in 0 until list.size) {
+            for (j in 0 until list[i].letters.size) {
+                if (!list[i].letters[j].isFill) {
+                    return Pair(i, j)
                 }
             }
         }
+        return Pair(-1, -1)
+    }
 
-        return Triple(-1, -1, Symbol.empty())
+    fun setNextSelect(list: MutableList<Word>) {
+        val nextPosition = getNextNotFillLetter(list)
+        if (nextPosition.first!=-1&&nextPosition.second!=-1) {
+            setSelected(list, nextPosition)
+        }
+    }
 
+    fun setSelected(list: MutableList<Word>, position: Pair<Int, Int>) {
+        val oldLetter = list[position.first].letters[position.second]
+        val newLetter = oldLetter.copy(isSelected = true)
+        list[position.first].letters[position.second] = newLetter
+        letter = newLetter.symbol
+    }
+
+    fun setFillLetter(list: MutableList<Word>, currentPosition: Pair<Int, Int>) {
+        val oldLetter = list[currentPosition.first].letters[currentPosition.second]
+        val letter = oldLetter.copy(isFill = true, isSelected = false)
+        list[currentPosition.first].letters[currentPosition.second] = letter
+    }
+
+    fun setNotSelected(list: MutableList<Word>) {
+        val currentPosition = getSelectLetter(list)
+        val oldLetter = list[currentPosition.first].letters[currentPosition.second]
+        val letter = oldLetter.copy(isSelected = false)
+        list[currentPosition.first].letters[currentPosition.second] = letter
     }
 }

@@ -1,16 +1,30 @@
 package com.abg.cryptogram
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import com.abg.cryptogram.data.ParseCSV
+import com.abg.cryptogram.model.MegaParser
+import com.abg.cryptogram.model.Quote
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Navigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer, GameFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, GameFragment()).commit()
+        val parseCSV = ParseCSV()
+        val quotes: List<Quote> = parseCSV.readCsv(assets.open("test.csv"))
+        quotes.forEach { Log.d("##", MegaParser.insertSlashes(it.quote).uppercase()) }
     }
+
+    override fun startFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.fade_in_fragment, R.anim.fade_out_fragment)
+            .replace(R.id.fragmentContainer, fragment).commit()
+
+    }
+
+
 }
