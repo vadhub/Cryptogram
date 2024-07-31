@@ -40,7 +40,10 @@ class GameFragment : Fragment() {
         val author = "OG budda ©"
         val game = Game {
             when(it) {
-                Game.StatusGame.GAME_OVER -> { Log.d("info", "lol")}
+                Game.StatusGame.GAME_OVER -> {
+                    navigator.startFragment(LostFragment())
+                    Log.d("info", "lol")
+                }
                 Game.StatusGame.WIN -> {
                     recyclerView.animate().alpha(0f).setDuration(200).withEndAction {
                         val fragmentWin = FragmentWin()
