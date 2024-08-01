@@ -3,7 +3,6 @@ package com.abg.cryptogram.model
 import android.widget.TextView
 import com.abg.cryptogram.adapter.LetterAdapter
 import java.util.LinkedList
-import java.util.Queue
 import kotlin.random.Random
 
 class Game(private val gameStatus: (StatusGame) -> Unit) {

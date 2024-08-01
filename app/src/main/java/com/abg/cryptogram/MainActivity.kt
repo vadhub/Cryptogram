@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, GameFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, TestFragment()).commit()
     }
 
     override fun startFragment(fragment: Fragment) {

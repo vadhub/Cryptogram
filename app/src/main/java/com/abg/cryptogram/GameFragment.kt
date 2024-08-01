@@ -63,6 +63,7 @@ class GameFragment : Fragment() {
             }
         }
 
+        Log.d("ss", MegaParser.insertSlashes(quote.quote.toUpperCase()))
         val list = game.sentenceMapToListWords(MegaParser.insertSlashes(quote.quote.toUpperCase()))
         Log.d("##", list.toTypedArray().contentToString())
 
