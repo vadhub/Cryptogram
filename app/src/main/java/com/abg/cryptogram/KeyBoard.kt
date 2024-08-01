@@ -114,11 +114,9 @@ class KeyBoard {
         textView.setOnClickListener {  }
         textView.isClickable = false
         textView.animate()
-            .setStartDelay(1000) //prevent the animation from starting
             .scaleY(1.5f)
             .scaleX(1.5f)
             .setDuration(200)
-            .setStartDelay(0)
             .withEndAction{
                 textView.animate().scaleY(1f).scaleX(1f)
                 textView.background = transition
