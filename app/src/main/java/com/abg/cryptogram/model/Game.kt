@@ -1,5 +1,6 @@
 package com.abg.cryptogram.model
 
+import android.util.Log
 import android.widget.TextView
 import com.abg.cryptogram.adapter.LetterAdapter
 import java.util.LinkedList
@@ -94,6 +95,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     }
 
     fun compareLetters(textView: TextView, candidate: Char): Boolean {
+        Log.d("##", candidate.toString())
         if (candidate == letter) {
             notGuessed--
             val count = frequency[candidate]
@@ -172,5 +174,9 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         val oldLetter = list[currentPosition.first].letters[currentPosition.second]
         val letter = oldLetter.copy(isSelected = false)
         list[currentPosition.first].letters[currentPosition.second] = letter
+    }
+
+    fun setLetter(symbol: Char) {
+        this.letter = symbol
     }
 }

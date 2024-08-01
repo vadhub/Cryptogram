@@ -20,8 +20,9 @@ class TestFragment : Fragment() {
 
     private lateinit var thisContext: Context
     private var currentTextView: TextView? = null
-    private val emptyTextViewList: LinkedList<TextView> = LinkedList()
+    private val emptyTextViewList: LinkedList<Pair<TextView, Char>> = LinkedList()
     private lateinit var navigator: Navigator
+    private lateinit var game: Game
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -41,7 +42,7 @@ class TestFragment : Fragment() {
         val sentence = "УПАДИ СЕМЬ РАЗ И ВОСЕМ РАЗ ПОДНИМИСЬ"
         val keyBoard = KeyBoard()
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
-        val game = Game {
+        game = Game {
             when(it) {
                 Game.StatusGame.GAME_OVER -> {navigator.startFragment(LostFragment())}
                 Game.StatusGame.WIN -> {val fragmentWin = FragmentWin()
@@ -67,9 +68,10 @@ class TestFragment : Fragment() {
             if (game.compareLetters(textview, letter)) {
                 currentTextView?.text = letter.toString()
                 changeBackground(currentTextView!!, false)
-                emptyTextViewList.remove(currentTextView)
-                currentTextView = emptyTextViewList.element()
+                emptyTextViewList.remove(Pair(currentTextView, letter))
+                currentTextView = emptyTextViewList.element().first
                 changeBackground(currentTextView!!, true)
+                game.setLetter(emptyTextViewList.element().second)
             } else {
                 Log.d("@@", "(:LOL:) $letter")
             }
@@ -105,9 +107,10 @@ class TestFragment : Fragment() {
                 if (currentTextView!=null) changeBackground(currentTextView!!, false)
                 changeBackground(editLetter, true)
                 currentTextView = editLetter
+                game.setLetter(symbol.symbol)
             }
             editLetter.text = ""
-            emptyTextViewList.add(editLetter)
+            emptyTextViewList.add(Pair(editLetter, symbol.symbol))
         }
 
         codeTextView.text = symbol.code.toString()
