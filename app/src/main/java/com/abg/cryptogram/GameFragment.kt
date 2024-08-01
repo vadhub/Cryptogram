@@ -43,7 +43,7 @@ class GameFragment : Fragment() {
         val saveConfig = SaveConfig(requireContext())
         val quoteViewModelFactory = QuoteViewModelFactory(context?.assets?.open("test.csv")!!)
         val quoteViewModel: QuoteViewModel = ViewModelProvider(this, quoteViewModelFactory)[QuoteViewModel::class.java]
-        val quote = quoteViewModel.getQuote(saveConfig.getLevel())
+        val quote = quoteViewModel.getQuote(1)
         val game = Game {
             when(it) {
                 Game.StatusGame.GAME_OVER -> {
@@ -54,7 +54,7 @@ class GameFragment : Fragment() {
                     recyclerView.animate().alpha(0f).setDuration(200).withEndAction {
                         val fragmentWin = FragmentWin()
                         fragmentWin.arguments = Bundle().apply {
-                            putString("quote", quote.quote.replace('/', ' ').lowercase())
+                            putString("quote", quote.quote)
                             putString("author", quote.author)
                         }
                         navigator.startFragment(fragmentWin)
@@ -71,10 +71,11 @@ class GameFragment : Fragment() {
         wordAdapter.setOnClickItemListener {
             game.setNotSelected(list)
             game.setSelected(list, it)
-            wordAdapter.setSentences(list)
+            wordAdapter.notifyDataSetChanged()
         }
 
         recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.setHasFixedSize(true)
         recyclerView.adapter = wordAdapter
 
         game.setAllConcreteLetterFindListener { letter, textView ->
@@ -86,15 +87,15 @@ class GameFragment : Fragment() {
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
         val keyBoardListener = KeyBoardClickListener { textview, letter ->
             if (game.compareLetters(textview, letter)) {
-                val currentPosition = game.getSelectLetter(list)
+                val currentPosition = game.getSelectLetter()
                 game.setFillLetter(list, currentPosition)
+                game.removeNotFill(currentPosition)
                 wordAdapter.notifyItemChanged(currentPosition.first)
                 game.setNextSelect(list)
-                wordAdapter.setSentences(list)
+                wordAdapter.notifyDataSetChanged()
             } else {
                 lives.setLives(game.minusHilth())
                 wrongView.animate()
-                    .setStartDelay(100)
                     .alpha(1f)
                     .setDuration(200) // То есть, то нет!
                     .withEndAction{ wrongView.animate().alpha(0f) }.start()

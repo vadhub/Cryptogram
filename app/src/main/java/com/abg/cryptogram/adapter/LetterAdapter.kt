@@ -13,11 +13,12 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.cryptogram.R
 import com.abg.cryptogram.model.Symbol
 
-class LetterAdapter(
-    private val parentPosition: Int,
-    private val sentence: MutableList<Symbol>,
-    private val onClickItemListener: (Pair<Int,Int>) -> Unit
-) : Adapter<RecyclerView.ViewHolder>() {
+class LetterAdapter : Adapter<RecyclerView.ViewHolder>() {
+
+    var parentPosition: Int = -1
+    var sentences: MutableList<Symbol> = mutableListOf()
+    var onClickItemListener: (Pair<Int,Int>) -> Unit = {}
+
 
     companion object {
         const val VIEW_TYPE_LETTER = 1
@@ -37,6 +38,7 @@ class LetterAdapter(
                 text = letter.symbol.toString()
             } else {
                 linearLayoutLetter.setOnClickListener {
+                    updateFocusView(editLetter.context, letter.isSelected, editLetter)
                     onClickItemListener.invoke(Pair(parentPosition, layoutPosition))
                 }
                 text = ""
@@ -73,17 +75,17 @@ class LetterAdapter(
             else -> throw IllegalArgumentException("Invalid view type")
         }
 
-    override fun getItemCount(): Int = sentence.size
+    override fun getItemCount(): Int = sentences.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when(holder) {
-            is LetterViewHolder -> holder.bind(sentence[position])
-            is SignViewHolder -> holder.bind(sentence[position])
+            is LetterViewHolder -> holder.bind(sentences[position])
+            is SignViewHolder -> holder.bind(sentences[position])
         }
     }
 
     override fun getItemViewType(position: Int): Int =
-        when (sentence[position].viewType) {
+        when (sentences[position].viewType) {
             VIEW_TYPE_LETTER -> VIEW_TYPE_LETTER
             VIEW_TYPE_SIGN -> VIEW_TYPE_SIGN
             else -> -1

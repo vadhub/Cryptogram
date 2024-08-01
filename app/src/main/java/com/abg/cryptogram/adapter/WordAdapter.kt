@@ -16,6 +16,7 @@ class WordAdapter:
 
     private var sentences: MutableList<Word> = mutableListOf()
     private var onClickItemListener: (Pair<Int,Int>) -> Unit = {}
+    val adapter = LetterAdapter()
 
     fun setOnClickItemListener(onClickItemListener: (Pair<Int,Int>) -> Unit) {
         this.onClickItemListener = onClickItemListener
@@ -31,8 +32,11 @@ class WordAdapter:
         private val recyclerLetter: RecyclerView = view.findViewById(R.id.recycler_letter)
 
         fun bind(sentence: Word) {
-            val adapter = LetterAdapter(layoutPosition, sentence.letters, onClickItemListener)
+            adapter.sentences = sentence.letters
+            adapter.onClickItemListener = onClickItemListener
+            adapter.parentPosition = layoutPosition
             recyclerLetter.layoutManager = LinearLayoutManager(view.context, HORIZONTAL, false)
+            recyclerLetter.setHasFixedSize(true)
             recyclerLetter.adapter = adapter
         }
     }
