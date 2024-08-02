@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import kotlin.random.Random
 
 class LostFragment : Fragment() {
 
@@ -26,6 +28,9 @@ class LostFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val textLost: TextView = view.findViewById(R.id.lots_text)
+        val lost = resources.getStringArray(R.array.lost)[Random.nextInt(2)]
+        textLost.text = lost
         view.findViewById<Button>(R.id.restart).setOnClickListener {
             navigator.startFragment(GameFragment())
         }

@@ -44,7 +44,7 @@ class GameFragment : Fragment() {
         val quoteViewModelFactory = QuoteViewModelFactory(context?.assets?.open("test.csv")!!)
         val quoteViewModel: QuoteViewModel = ViewModelProvider(this, quoteViewModelFactory)[QuoteViewModel::class.java]
         val saveConfig = SaveConfig(requireContext())
-        val quote = quoteViewModel.getQuote(29)
+        val quote = quoteViewModel.getQuote(saveConfig.getLevel())
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
         game = Game {
             when(it) {

@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/livesWrap"
         android:fillViewport="true"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp">
 
         <LinearLayout

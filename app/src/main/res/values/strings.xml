@@ -2,6 +2,10 @@
     <string name="app_name">Cryptogram</string>
     <string name="next">next</string>
     <string name="again">one more time?</string>
-    <string name="lost">LOL</string>
+    <string-array name="lost">
+        <item>LOL</item>
+        <item>Noooooot...</item>
+        <item>Better luck next time</item>
+    </string-array>
     <!--    <test_quote>Упади семь раз и восемь раз поднимись</test_quote>-->
 </resources>

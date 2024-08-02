@@ -3,6 +3,11 @@
     <string name="app_name">Cryptogram</string>
     <string name="next">далее</string>
     <string name="again">еще разок?</string>
-    <string name="lost">ЛОЛ</string>
+
+    <string-array name="lost">
+        <item>ЛОЛ</item>
+        <item>Нееееет...</item>
+        <item>В следующий раз повезет</item>
+    </string-array>
 
 </resources>
