@@ -120,6 +120,7 @@ class KeyBoard {
             .withEndAction{
                 textView.animate().scaleY(1f).scaleX(1f)
                 textView.background = transition
+                textView.alpha = 0.3f
             }.start()
     }
 }

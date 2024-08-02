@@ -9,10 +9,12 @@ class SaveConfig(private val context: Context) {
     private val namePref = "cryptogram_my"
 
     fun saveLevel(i: Int) {
-        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
-        val ed: SharedPreferences.Editor = pref.edit()
-        ed.putInt("level", i)
-        ed.apply()
+        if (i <= 29) {
+            pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
+            val ed: SharedPreferences.Editor = pref.edit()
+            ed.putInt("level", i)
+            ed.apply()
+        }
     }
 
     fun getLevel(): Int {

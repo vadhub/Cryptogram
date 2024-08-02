@@ -2,8 +2,20 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Cryptogram" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+         <item name="colorPrimary">@color/beige</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="Theme.Cryptogram" parent="Base.Theme.Cryptogram" />
+    <style name="key">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_weight">0.09</item>
+        <item name="android:background">@drawable/border_keyword</item>
+        <item name="android:gravity">center</item>
+        <item name="fontFamily">@font/inter_28pt_semi_bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>
