@@ -19,7 +19,7 @@ import java.util.LinkedList
 class TestFragment : Fragment() {
 
     private lateinit var thisContext: Context
-    private var currentTextView: TextView? = null
+    private lateinit var currentTextView: TextView
     private val emptyTextViewList: LinkedList<Pair<TextView, Char>> = LinkedList()
     private val codeWithTextViewList: LinkedList<Pair<TextView, Char>> = LinkedList()
     private lateinit var navigator: Navigator
@@ -65,16 +65,23 @@ class TestFragment : Fragment() {
             sentenceView.addView(createRow(list[i].letters))
         }
 
+        val first = emptyTextViewList.peek()
+        if (first != null) {
+            currentTextView = first.first
+            changeBackground(currentTextView, true)
+            game.setLetter(emptyTextViewList.element().second)
+        }
+
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
         val keyBoardListener = KeyBoardClickListener {textview, letter ->
             if (game.compareLetters(letter)) {
-                currentTextView?.text = letter.toString()
-                changeBackground(currentTextView!!, false)
+                currentTextView.text = letter.toString()
+                changeBackground(currentTextView, false)
                 emptyTextViewList.remove(Pair(currentTextView, letter))
                 val letterPair = emptyTextViewList.peek()
                 if (letterPair != null) {
                     currentTextView = letterPair.first
-                    changeBackground(currentTextView!!, true)
+                    changeBackground(currentTextView, true)
                     game.setLetter(emptyTextViewList.element().second)
                 }
             } else {
@@ -109,7 +116,7 @@ class TestFragment : Fragment() {
             editLetter.text = symbol.symbol.toString()
         } else {
             editLetter.setOnClickListener {
-                if (currentTextView!=null) changeBackground(currentTextView!!, false)
+                changeBackground(currentTextView, false)
                 changeBackground(editLetter, true)
                 currentTextView = editLetter
                 game.setLetter(symbol.symbol)
