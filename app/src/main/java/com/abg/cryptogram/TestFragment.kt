@@ -21,6 +21,7 @@ class TestFragment : Fragment() {
     private lateinit var thisContext: Context
     private var currentTextView: TextView? = null
     private val emptyTextViewList: LinkedList<Pair<TextView, Char>> = LinkedList()
+    private val codeWithTextViewList: LinkedList<Pair<TextView, Char>> = LinkedList()
     private lateinit var navigator: Navigator
     private lateinit var game: Game
 
@@ -39,7 +40,7 @@ class TestFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val sentence = "УПАДИ СЕМЬ РАЗ И ВОСЕМ РАЗ ПОДНИМИСЬ"
+        val sentence = "Я ХОРОШО ПОКАКАЛ"
         val keyBoard = KeyBoard()
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
         game = Game {
@@ -54,6 +55,7 @@ class TestFragment : Fragment() {
             }
         }
 
+        game.setAllConcreteLetterFindListener { clearAllCodeFromFindLetter(it) }
 
         val str = MegaParser.insertSlashes(sentence)
         Log.d("123", str)
@@ -64,14 +66,17 @@ class TestFragment : Fragment() {
         }
 
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
-        val keyBoardListener = KeyBoardClickListener { textview, letter ->
-            if (game.compareLetters(textview, letter)) {
+        val keyBoardListener = KeyBoardClickListener {textview, letter ->
+            if (game.compareLetters(letter)) {
                 currentTextView?.text = letter.toString()
                 changeBackground(currentTextView!!, false)
                 emptyTextViewList.remove(Pair(currentTextView, letter))
-                currentTextView = emptyTextViewList.element().first
-                changeBackground(currentTextView!!, true)
-                game.setLetter(emptyTextViewList.element().second)
+                val letterPair = emptyTextViewList.peek()
+                if (letterPair != null) {
+                    currentTextView = letterPair.first
+                    changeBackground(currentTextView!!, true)
+                    game.setLetter(emptyTextViewList.element().second)
+                }
             } else {
                 Log.d("@@", "(:LOL:) $letter")
             }
@@ -112,7 +117,7 @@ class TestFragment : Fragment() {
             editLetter.text = ""
             emptyTextViewList.add(Pair(editLetter, symbol.symbol))
         }
-
+        codeWithTextViewList.add(Pair(codeTextView, symbol.symbol))
         codeTextView.text = symbol.code.toString()
         codeTextView.text = if (!symbol.isShowCode) symbol.code.toString() else ""
 
@@ -128,5 +133,13 @@ class TestFragment : Fragment() {
         val editLetter = view.findViewById<TextView>(R.id.sign)
         editLetter.text = symbol.symbol.toString()
         return view
+    }
+
+    fun clearAllCodeFromFindLetter(letter: Char) {
+        val concreteEmptyCodes = codeWithTextViewList.filter { it.second == letter }
+        concreteEmptyCodes.forEach {
+            it.first.text = ""
+            codeWithTextViewList.remove(it)
+        }
     }
 }
