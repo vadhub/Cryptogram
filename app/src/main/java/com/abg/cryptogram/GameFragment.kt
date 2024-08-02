@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.abg.cryptogram.data.SaveConfig
 import com.abg.cryptogram.model.Game
@@ -25,6 +26,7 @@ class GameFragment : Fragment() {
     private val codeWithTextViewList: LinkedList<Pair<TextView /* textview code */, Char /* letter */>> = LinkedList()
     private lateinit var navigator: Navigator
     private lateinit var game: Game
+    private val quoteViewModel: QuoteViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -41,8 +43,7 @@ class GameFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val quoteViewModelFactory = QuoteViewModelFactory(context?.assets?.open("test.csv")!!)
-        val quoteViewModel: QuoteViewModel = ViewModelProvider(this, quoteViewModelFactory)[QuoteViewModel::class.java]
+
         val saveConfig = SaveConfig(requireContext())
         val quote = quoteViewModel.getQuote(saveConfig.getLevel())
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)

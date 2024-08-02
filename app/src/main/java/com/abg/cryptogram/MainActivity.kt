@@ -1,14 +1,17 @@
 package com.abg.cryptogram
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 
 class MainActivity : AppCompatActivity(), Navigator {
+    private val quoteViewModel: QuoteViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        quoteViewModel.createListQuotes(resources.assets.open("test.csv"))
         supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, GameFragment()).commit()
     }
 
