@@ -4,6 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:id="@+id/livesWrap"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/lives"
+            layout="@layout/lives" />
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/sentence"
         android:gravity="center"
@@ -26,5 +38,12 @@
             android:id="@+id/keyboardView"
             layout="@layout/keyboard" />
     </FrameLayout>
+
+    <View
+        android:id="@+id/wrong"
+        android:alpha="0"
+        android:background="@color/gray_alpha_20"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
