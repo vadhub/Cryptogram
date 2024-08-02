@@ -6,26 +6,33 @@
 
     <FrameLayout
         android:id="@+id/livesWrap"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        app:layout_constraintTop_toTopOf="parent">
+
         <include
             android:id="@+id/lives"
             layout="@layout/lives" />
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/sentence"
-        android:gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ScrollView
         app:layout_constraintBottom_toTopOf="@id/keyboardWrap"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/livesWrap"
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:id="@+id/sentence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" />
+    </ScrollView>
 
     <FrameLayout
         android:id="@+id/keyboardWrap"
@@ -41,9 +48,9 @@
 
     <View
         android:id="@+id/wrong"
-        android:alpha="0"
-        android:background="@color/gray_alpha_20"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="@color/gray_alpha_20" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

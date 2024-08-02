@@ -22,7 +22,7 @@ class GameFragment : Fragment() {
     private lateinit var thisContext: Context
     private lateinit var currentTextView: TextView
     private val emptyTextViewList: LinkedList<Pair<TextView, Char>> = LinkedList()
-    private val codeWithTextViewList: LinkedList<Pair<TextView, Char>> = LinkedList()
+    private val codeWithTextViewList: LinkedList<Pair<TextView /* textview code */, Char /* letter */>> = LinkedList()
     private lateinit var navigator: Navigator
     private lateinit var game: Game
 
@@ -44,7 +44,7 @@ class GameFragment : Fragment() {
         val quoteViewModelFactory = QuoteViewModelFactory(context?.assets?.open("test.csv")!!)
         val quoteViewModel: QuoteViewModel = ViewModelProvider(this, quoteViewModelFactory)[QuoteViewModel::class.java]
         val saveConfig = SaveConfig(requireContext())
-        val quote = quoteViewModel.getQuote(1)
+        val quote = quoteViewModel.getQuote(29)
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
         game = Game {
             when(it) {
@@ -102,7 +102,6 @@ class GameFragment : Fragment() {
                     .alpha(1f)
                     .setDuration(200) // То есть, то нет!
                     .withEndAction{ wrongView.animate().alpha(0f) }.start()
-                Log.d("@@", "(:LOL:) $letter")
             }
         }
 
