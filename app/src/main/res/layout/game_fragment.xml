@@ -8,10 +8,12 @@
         android:id="@+id/level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingEnd="8dp"
         android:text="level 1"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="@id/livesWrap"
         app:layout_constraintEnd_toStartOf="@+id/livesWrap"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/livesWrap" />
 
     <FrameLayout
