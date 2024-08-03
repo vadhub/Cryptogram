@@ -28,10 +28,18 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         return hilth
     }
 
+    // chat gpt generation
+    fun generateRandomBoolean(probability: Int): Boolean {
+        require(probability in 0..100) { "Вероятность должна быть в диапазоне от 0 до 100%" }
+
+        val randomValue = Random.nextInt(1, 101) // генерируем случайное число от 1 до 100
+        return randomValue <= probability
+    }
+
     /**
      * Algorithm - MONSTER OF STRINGS. for parse string to list of words
      */
-    fun sentenceMapToListWords(sentence: String): MutableList<Word> {
+    fun sentenceMapToListWords(sentence: String, level: Int): MutableList<Word> {
         val alphabet: MutableMap<Char, Int> = mutableMapOf()
         val words: MutableList<Word> = mutableListOf()
         var letters: MutableList<Symbol> = mutableListOf()
@@ -42,7 +50,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
                 if (char.isLetter()) {
                     var c = char
                     val number: Int
-                    val isFill = Random.nextBoolean()
+                    val isFill = generateRandomBoolean(getProbability(level))
                     if (char !in alphabet) {
                         c = char
                         number = counter++
@@ -81,6 +89,24 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         }
         clearZeroFrequency(words)
         return words
+    }
+
+    private fun getProbability(level: Int): Int {
+        var probability = 60
+
+        if (level > 7) {
+            probability = 40
+        }
+        if (level > 15) {
+            probability = 35
+        }
+        if (level > 30) {
+            probability = 30
+        }
+        if (level > 40) {
+            probability = 25
+        }
+        return probability
     }
 
     fun compareLetters(textView: TextView, candidate: Char): Boolean {

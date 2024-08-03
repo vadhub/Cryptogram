@@ -6,18 +6,12 @@ import com.abg.cryptogram.data.ParseCSV
 import com.abg.cryptogram.model.Quote
 import java.io.InputStream
 
-class QuoteViewModel(inputStream: InputStream) : ViewModel() {
+class QuoteViewModel : ViewModel() {
     private var quotes: List<Quote> = mutableListOf()
-    init {
+
+    fun createListQuotes(inputStream: InputStream) {
         quotes = ParseCSV().readCsv(inputStream)
     }
 
     fun getQuote(level: Int): Quote = quotes[level]
-}
-
-@Suppress("UNCHECKED_CAST")
-class QuoteViewModelFactory(private val inputStream: InputStream) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return QuoteViewModel(inputStream) as T
-    }
 }

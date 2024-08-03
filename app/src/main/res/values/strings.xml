@@ -7,5 +7,6 @@
         <item>Noooooot...</item>
         <item>Better luck next time</item>
     </string-array>
+    <string name="level">level</string>
     <!--    <test_quote>Упади семь раз и восемь раз поднимись</test_quote>-->
 </resources>

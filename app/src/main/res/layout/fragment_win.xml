@@ -25,15 +25,17 @@
                 android:src="@drawable/format_quote_24dp_cccccc_fill1_wght200_grad0_opsz24" />
 
             <TextView
+                android:layout_weight="0.5"
                 android:id="@+id/quot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:fontFamily="@font/inter_28pt_medium_italic"
                 android:textSize="20sp"
-                tools:text="Я хорошо покакал" />
+                tools:text="Я хорошо покакал///..........................." />
 
             <ImageView
+                android:layout_weight="0.1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/format_quote_24dp_cccccc_fill1_wght200_grad0_opsz24" />

@@ -18,8 +18,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled true
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -33,6 +36,8 @@ android {
 }
 
 dependencies {
+
+    implementation "androidx.fragment:fragment-ktx:1.8.2"
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
