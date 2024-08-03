@@ -4,12 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="level 1"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="@id/livesWrap"
+        app:layout_constraintEnd_toStartOf="@+id/livesWrap"
+        app:layout_constraintTop_toTopOf="@id/livesWrap" />
+
     <FrameLayout
         android:id="@+id/livesWrap"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <include
@@ -18,13 +30,13 @@
     </FrameLayout>
 
     <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@id/keyboardWrap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/livesWrap"
-        android:fillViewport="true"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp">
+        app:layout_constraintTop_toBottomOf="@id/livesWrap">
 
         <LinearLayout
             android:id="@+id/sentence"

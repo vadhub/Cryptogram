@@ -9,5 +9,6 @@
         <item>Нееееет...</item>
         <item>В следующий раз повезет</item>
     </string-array>
+    <string name="level">уровень</string>
 
 </resources>
