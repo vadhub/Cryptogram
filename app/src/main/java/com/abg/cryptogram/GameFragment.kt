@@ -1,5 +1,6 @@
 package com.abg.cryptogram
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -42,10 +43,14 @@ class GameFragment : Fragment() {
         return inflater.inflate(R.layout.game_fragment, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val saveConfig = SaveConfig(requireContext())
-        val quote = quoteViewModel.getQuote(saveConfig.getLevel())
+        val level = saveConfig.getLevel()
+        val quote = quoteViewModel.getQuote(level)
+        val levelTextView: TextView = view.findViewById(R.id.level)
+        levelTextView.text = resources.getString(R.string.level) + " ${level + 1}"
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
         game = Game {
             when(it) {
@@ -63,7 +68,8 @@ class GameFragment : Fragment() {
                 }
             }
         }
-        val list = game.sentenceMapToListWords(MegaParser.insertSlashes(quote.quote.uppercase()))
+
+        val list = game.sentenceMapToListWords(MegaParser.insertSlashes(quote.quote.uppercase()), level)
         val keyBoard = KeyBoard()
         val wrongView: View = view.findViewById(R.id.wrong)
         val livesView: View = view.findViewById(R.id.lives)
