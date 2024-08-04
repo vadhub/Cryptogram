@@ -2,7 +2,6 @@ package com.abg.cryptogram.ui.tutorial
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +51,7 @@ class TutorialFragment : Fragment() {
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
         val keyBoard = KeyBoard()
         val wrongView: View = view.findViewById(R.id.wrong)
+        createTutorDialog()
         game = Game {
             when(it) {
                 Game.StatusGame.GAME_OVER -> {navigator.startFragment(LostFragment())}
@@ -181,6 +181,11 @@ class TutorialFragment : Fragment() {
         list.add(Word(mutableListOf(Symbol(symbol='Р', code=10, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='А', code=3, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='З', code=11, isFill=true, isShowCode=false, viewType=1))))
         list.add(Word(mutableListOf(Symbol(symbol='П', code=2, isFill=false, isShowCode=false, viewType=1), Symbol(symbol='О', code=13, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='Д', code=4, isFill=true, isShowCode=false, viewType=1), Symbol(symbol='Н', code=14, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='И', code=5, isFill=true, isShowCode=false, viewType=1), Symbol(symbol='М', code=8, isFill=false, isShowCode=false, viewType=1), Symbol(symbol='И', code=5, isFill=true, isShowCode=false, viewType=1), Symbol(symbol='С', code=6, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='Ь', code=9, isFill=false, isShowCode=false, viewType=1))))
         return list
+    }
+
+    fun createTutorDialog() {
+        val tutorialIntro = TutorialIntroFragment()
+        tutorialIntro.show(childFragmentManager, "IntroFragment")
     }
 
 }
