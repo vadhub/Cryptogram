@@ -140,7 +140,7 @@ class KeyBoard {
             }.start()
     }
 
-    fun pulseAnimation(view: View) {
+    fun pulseAnimation(view: View) : ObjectAnimator {
         val scaleDown: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
             view,
             PropertyValuesHolder.ofFloat("scaleX", 0.8f),
@@ -152,5 +152,7 @@ class KeyBoard {
         scaleDown.repeatMode = ObjectAnimator.REVERSE
 
         scaleDown.start()
+
+        return scaleDown
     }
 }

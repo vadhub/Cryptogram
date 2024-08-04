@@ -2,6 +2,7 @@ package com.abg.cryptogram.ui.tutorial
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,11 +64,13 @@ class TutorialFragment : Fragment() {
                 }
             }
         }
+        game.setNotGuessed(6)
+        game.setFrequency(mutableMapOf(Pair('П', 1), Pair('М',1), Pair('З',1), Pair('И',1), Pair('Д',1), Pair('Ь',1)))
         keyBoard.inflateKeyBoard(keyBoardView)
         val list = tutorial()
         val listKeyTutorial = keyBoard.tutorialKey()
         var currentKey = listKeyTutorial.peek()
-        keyBoard.pulseAnimation(currentKey)
+        var objectAnimator = keyBoard.pulseAnimation(currentKey)
 
         game.setAllConcreteLetterFindListener { letter, textView ->
             keyBoard.killKey(textView)
@@ -85,12 +88,13 @@ class TutorialFragment : Fragment() {
         }
         val keyBoardListener = KeyBoardClickListener {textview, letter ->
             if (game.compareLetters(textview, letter)) {
-                if (currentKey != null) {
-                    currentKey.animation.cancel()
-                    listKeyTutorial.remove(currentKey)
-                    currentKey = listKeyTutorial.peek()
-                    currentKey?.let { keyBoard.pulseAnimation(it) }
-                }
+                objectAnimator.cancel()
+                textview.scaleX = 1f
+                textview.scaleY = 1f
+                listKeyTutorial.remove(textview)
+                currentKey = listKeyTutorial.peek()
+                currentKey?.let { objectAnimator = keyBoard.pulseAnimation(it) }
+
                 currentTextView.text = letter.toString()
                 currentTextView.setOnClickListener(null /* remove click for forbid selected */)
                 changeBackground(currentTextView, false)

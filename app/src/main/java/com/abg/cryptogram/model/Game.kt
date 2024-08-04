@@ -1,5 +1,6 @@
 package com.abg.cryptogram.model
 
+import android.hardware.ConsumerIrManager.CarrierFrequencyRange
 import android.util.Log
 import android.widget.TextView
 import com.abg.cryptogram.data.SaveConfig
@@ -26,6 +27,14 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         if (hint > 0) {
             saveConfig.saveHint(hint--)
         }
+    }
+
+    fun setNotGuessed(i: Int) {
+        this.notGuessed = i
+    }
+
+    fun setFrequency(frequency: MutableMap<Char, Int>) {
+        this.frequency = frequency
     }
 
     fun getHint() = hint
