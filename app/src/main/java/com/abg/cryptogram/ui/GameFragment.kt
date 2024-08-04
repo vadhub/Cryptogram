@@ -1,9 +1,8 @@
-package com.abg.cryptogram
+package com.abg.cryptogram.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +12,15 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
+import com.abg.cryptogram.Navigator
+import com.abg.cryptogram.QuoteViewModel
+import com.abg.cryptogram.R
 import com.abg.cryptogram.data.SaveConfig
 import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.model.MegaParser
 import com.abg.cryptogram.model.Symbol
+import com.abg.cryptogram.ui.keyboard.KeyBoard
+import com.abg.cryptogram.ui.keyboard.KeyBoardClickListener
 import java.util.LinkedList
 
 class GameFragment : Fragment() {

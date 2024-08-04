@@ -1,4 +1,4 @@
-package com.abg.cryptogram
+package com.abg.cryptogram.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.abg.cryptogram.Navigator
+import com.abg.cryptogram.R
 import kotlin.random.Random
 
 class LostFragment : Fragment() {

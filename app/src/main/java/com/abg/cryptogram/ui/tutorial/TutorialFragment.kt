@@ -1,4 +1,4 @@
-package com.abg.cryptogram
+package com.abg.cryptogram.ui.tutorial
 
 import android.content.Context
 import android.os.Bundle
@@ -9,10 +9,18 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
+import com.abg.cryptogram.Navigator
+import com.abg.cryptogram.R
+import com.abg.cryptogram.data.SaveConfig
 import com.abg.cryptogram.model.Game
-import com.abg.cryptogram.model.MegaParser
 import com.abg.cryptogram.model.Symbol
+import com.abg.cryptogram.model.Word
+import com.abg.cryptogram.ui.GameFragment
+import com.abg.cryptogram.ui.LostFragment
+import com.abg.cryptogram.ui.keyboard.KeyBoard
+import com.abg.cryptogram.ui.keyboard.KeyBoardClickListener
 import java.util.LinkedList
+
 
 class TutorialFragment : Fragment() {
 
@@ -38,23 +46,28 @@ class TutorialFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val quote = "УПАДИ СЕМЬ РАЗ И ВОСЕМЬ РАЗ ПОДНИМИСЬ"
+        val saveConfig = SaveConfig(thisContext)
         val keyBoardView: View = view.findViewById(R.id.keyboardView)
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
-        val list = game.sentenceMapToListWords(MegaParser.insertSlashes(quote), 1)
         val keyBoard = KeyBoard()
         val wrongView: View = view.findViewById(R.id.wrong)
         game = Game {
             when(it) {
                 Game.StatusGame.GAME_OVER -> {navigator.startFragment(LostFragment())}
                 Game.StatusGame.WIN -> {
-                    val fragmentWin = GameFragment()
+                    saveConfig.saveIsTutorComplete(true)
+                    val gameFragment = GameFragment()
                     sentenceView.animate().alpha(0f).setDuration(200).withEndAction {
-                        navigator.startFragment(fragmentWin)
+                        navigator.startFragment(gameFragment)
                     }.start()
                 }
             }
         }
+        keyBoard.inflateKeyBoard(keyBoardView)
+        val list = tutorial()
+        val listKeyTutorial = keyBoard.tutorialKey()
+        var currentKey = listKeyTutorial.peek()
+        keyBoard.pulseAnimation(currentKey)
 
         game.setAllConcreteLetterFindListener { letter, textView ->
             keyBoard.killKey(textView)
@@ -72,6 +85,12 @@ class TutorialFragment : Fragment() {
         }
         val keyBoardListener = KeyBoardClickListener {textview, letter ->
             if (game.compareLetters(textview, letter)) {
+                if (currentKey != null) {
+                    currentKey.animation.cancel()
+                    listKeyTutorial.remove(currentKey)
+                    currentKey = listKeyTutorial.peek()
+                    currentKey?.let { keyBoard.pulseAnimation(it) }
+                }
                 currentTextView.text = letter.toString()
                 currentTextView.setOnClickListener(null /* remove click for forbid selected */)
                 changeBackground(currentTextView, false)
@@ -90,7 +109,6 @@ class TutorialFragment : Fragment() {
             }
         }
 
-        keyBoard.inflateKeyBoard(keyBoardView)
         keyBoard.setCLickListeners(keyBoardListener)
     }
 
@@ -150,4 +168,15 @@ class TutorialFragment : Fragment() {
             codeWithTextViewList.remove(it)
         }
     }
+
+    fun tutorial(): MutableList<Word> {
+        val list: MutableList<Word> = mutableListOf()
+        list.add(Word(mutableListOf(Symbol(symbol='У', code=1, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='П', code=2, isFill=true, isShowCode=false, viewType=1), Symbol(symbol='А', code=3, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='Д', code=4, isFill=false, isShowCode=false, viewType=1), Symbol(symbol='И', code=5, isFill=true, isShowCode=false, viewType=1))))
+        list.add(Word(mutableListOf(Symbol(symbol='С', code=6, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='Е', code=7, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='М', code=8, isFill=true, isShowCode=false, viewType=1), Symbol(symbol='Ь', code=9, isFill=true, isShowCode=false, viewType=1), Symbol(symbol=' ', code=-1, isFill=true, isShowCode=false, viewType=2), Symbol(symbol='Р', code=10, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='А', code=3, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='З', code=11, isFill=false, isShowCode=false, viewType=1))))
+        list.add(Word(mutableListOf(Symbol(symbol='И', code=5, isFill=false, isShowCode=false, viewType=1), Symbol(symbol=' ', code=-1, isFill=true, isShowCode=false, viewType=2), Symbol(symbol='В', code=12, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='О', code=13, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='С', code=6, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='Е', code=7, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='М', code=8, isFill=true, isShowCode=false, viewType=1), Symbol(symbol='Ь', code=9, isFill=true, isShowCode=false, viewType=1))))
+        list.add(Word(mutableListOf(Symbol(symbol='Р', code=10, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='А', code=3, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='З', code=11, isFill=true, isShowCode=false, viewType=1))))
+        list.add(Word(mutableListOf(Symbol(symbol='П', code=2, isFill=false, isShowCode=false, viewType=1), Symbol(symbol='О', code=13, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='Д', code=4, isFill=true, isShowCode=false, viewType=1), Symbol(symbol='Н', code=14, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='И', code=5, isFill=true, isShowCode=false, viewType=1), Symbol(symbol='М', code=8, isFill=false, isShowCode=false, viewType=1), Symbol(symbol='И', code=5, isFill=true, isShowCode=false, viewType=1), Symbol(symbol='С', code=6, isFill=true, isShowCode=true, viewType=1), Symbol(symbol='Ь', code=9, isFill=false, isShowCode=false, viewType=1))))
+        return list
+    }
+
 }

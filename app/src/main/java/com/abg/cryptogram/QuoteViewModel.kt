@@ -1,8 +1,7 @@
 package com.abg.cryptogram
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.abg.cryptogram.data.ParseCSV
+import com.abg.cryptogram.model.ParseCSV
 import com.abg.cryptogram.model.Quote
 import java.io.InputStream
 

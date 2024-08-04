@@ -38,4 +38,16 @@ class SaveConfig(private val context: Context) {
         return pref.getInt("hint", 5)
     }
 
+    fun saveIsTutorComplete(isFirst: Boolean) {
+        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
+        val ed: SharedPreferences.Editor = pref.edit()
+        ed.putBoolean("tutor_complete", isFirst)
+        ed.apply()
+    }
+
+    fun getIsTutorComplete(): Boolean {
+        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
+        return pref.getBoolean("tutor_complete", false)
+    }
+
 }

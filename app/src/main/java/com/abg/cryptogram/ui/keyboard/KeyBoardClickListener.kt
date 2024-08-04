@@ -1,8 +1,9 @@
-package com.abg.cryptogram
+package com.abg.cryptogram.ui.keyboard
 
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.TextView
+import com.abg.cryptogram.R
 
 class KeyBoardClickListener(private val clickKeyBoard: (TextView,Char) -> Unit) : OnClickListener {
     override fun onClick(v: View?) {
@@ -27,18 +28,18 @@ class KeyBoardClickListener(private val clickKeyBoard: (TextView,Char) -> Unit) 
             R.id.letterS -> {clickKeyBoard.invoke(v as TextView, 'С')}
             R.id.letterT -> {clickKeyBoard.invoke(v as TextView, 'Т')}
             R.id.letterU -> {clickKeyBoard.invoke(v as TextView, 'У')}
-            R.id.letterPH -> {clickKeyBoard.invoke(v as TextView,'Ф')}
-            R.id.letterH -> {clickKeyBoard.invoke(v as TextView,'Х')}
+            R.id.letterPH -> {clickKeyBoard.invoke(v as TextView, 'Ф')}
+            R.id.letterH -> {clickKeyBoard.invoke(v as TextView, 'Х')}
             R.id.letterCH -> {clickKeyBoard.invoke(v as TextView,'Ч')}
-            R.id.letterC -> {clickKeyBoard.invoke(v as TextView,'Ц')}
-            R.id.letterSH -> {clickKeyBoard.invoke(v as TextView,'Ш')}
-            R.id.letterSCH -> {clickKeyBoard.invoke(v as TextView,'Щ')}
-            R.id.letter_not -> {clickKeyBoard.invoke(v as TextView,'Ы')}
-            R.id.letter_strong -> {clickKeyBoard.invoke(v as TextView,'Ъ')}
-            R.id.letter_gentle_sign -> {clickKeyBoard.invoke(v as TextView,'Ь')}
-            R.id.letterAE -> {clickKeyBoard.invoke(v as TextView,'Э')}
-            R.id.letterYU -> {clickKeyBoard.invoke(v as TextView,'Ю')}
-            R.id.letterYA -> {clickKeyBoard.invoke(v as TextView,'Я')}
+            R.id.letterC -> {clickKeyBoard.invoke(v as TextView, 'Ц')}
+            R.id.letterSH -> {clickKeyBoard.invoke(v as TextView, 'Ш')}
+            R.id.letterSCH -> {clickKeyBoard.invoke(v as TextView, 'Щ')}
+            R.id.letter_not -> {clickKeyBoard.invoke(v as TextView, 'Ы')}
+            R.id.letter_strong -> {clickKeyBoard.invoke(v as TextView, 'Ъ')}
+            R.id.letter_gentle_sign -> {clickKeyBoard.invoke(v as TextView, 'Ь')}
+            R.id.letterAE -> {clickKeyBoard.invoke(v as TextView, 'Э')}
+            R.id.letterYU -> {clickKeyBoard.invoke(v as TextView, 'Ю')}
+            R.id.letterYA -> {clickKeyBoard.invoke(v as TextView, 'Я')}
         }
     }
 }

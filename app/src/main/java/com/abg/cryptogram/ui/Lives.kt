@@ -1,7 +1,8 @@
-package com.abg.cryptogram
+package com.abg.cryptogram.ui
 
 import android.view.View
 import android.widget.ImageView
+import com.abg.cryptogram.R
 
 class Lives {
 
