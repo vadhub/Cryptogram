@@ -2,6 +2,7 @@ package com.abg.cryptogram.model
 
 import android.util.Log
 import android.widget.TextView
+import com.abg.cryptogram.data.SaveConfig
 import kotlin.random.Random
 
 class Game(private val gameStatus: (StatusGame) -> Unit) {
@@ -15,6 +16,19 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     private var letter = ' '
     private var notGuessed = 0
     private var frequency = mutableMapOf<Char, Int>()
+    private var hint = 5
+
+    fun setHint(hint: Int) {
+        this.hint = hint
+    }
+
+    fun minusHint(saveConfig: SaveConfig) {
+        if (hint > 0) {
+            saveConfig.saveHint(hint--)
+        }
+    }
+
+    fun getHint() = hint
 
     fun setAllConcreteLetterFindListener(allConcreteLetterFind: (letter: Char, TextView) -> Unit) {
         this.allConcreteLetterFindListener = allConcreteLetterFind

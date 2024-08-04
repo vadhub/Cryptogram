@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar.LayoutParams
@@ -50,6 +51,7 @@ class GameFragment : Fragment() {
         val level = saveConfig.getLevel()
         val quote = quoteViewModel.getQuote(level)
         val levelTextView: TextView = view.findViewById(R.id.level)
+        val keyBoardView: View = view.findViewById(R.id.keyboardView)
         levelTextView.text = resources.getString(R.string.level) + " ${level + 1}"
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
         game = Game {
@@ -66,6 +68,22 @@ class GameFragment : Fragment() {
                         navigator.startFragment(fragmentWin)
                     }.start()
                 }
+            }
+        }
+        game.setHint(saveConfig.getHint())
+
+        val hint: ImageView = view.findViewById(R.id.hint)
+        val hintText: TextView = view.findViewById(R.id.hintCount)
+        val hintCount = game.getHint()
+        hintText.text = hintCount.toString()
+
+        hint.setOnClickListener {
+            if (hintCount > 0) {
+                game.minusHilth()
+                hintText.text = hintCount.toString()
+                keyBoardView.visibility = View.GONE
+            } else {
+                // dialog with suggest to see adv video
             }
         }
 
@@ -91,10 +109,10 @@ class GameFragment : Fragment() {
             game.setLetter(emptyTextViewList.element().second)
         }
 
-        val keyBoardView: View = view.findViewById(R.id.keyboardView)
         val keyBoardListener = KeyBoardClickListener {textview, letter ->
             if (game.compareLetters(textview, letter)) {
                 currentTextView.text = letter.toString()
+                currentTextView.setOnClickListener(null /* remove click for forbid selected */)
                 changeBackground(currentTextView, false)
                 emptyTextViewList.remove(Pair(currentTextView, letter))
                 val letterPair = emptyTextViewList.peek()
