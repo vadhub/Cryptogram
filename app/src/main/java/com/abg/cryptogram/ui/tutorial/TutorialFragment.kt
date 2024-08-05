@@ -47,10 +47,10 @@ class TutorialFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val saveConfig = SaveConfig(thisContext)
-        val keyBoardView: View = view.findViewById(R.id.keyboardView)
-        val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
+        val keyBoardView: View = view.findViewById(R.id.keyboardView_tutor)
+        val sentenceView = view.findViewById<LinearLayout>(R.id.sentence_tutor)
         val keyBoard = KeyBoard()
-        val wrongView: View = view.findViewById(R.id.wrong)
+        val wrongView: View = view.findViewById(R.id.wrong_tutor)
         createTutorDialog()
         game = Game {
             when(it) {

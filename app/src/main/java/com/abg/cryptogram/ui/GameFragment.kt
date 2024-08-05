@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -59,7 +60,9 @@ class GameFragment : Fragment() {
         val level = saveConfig.getLevel()
         val quote = quoteViewModel.getQuote(level)
         val levelTextView: TextView = view.findViewById(R.id.level)
-        keyBoardView = view.findViewById(R.id.keyboardView)
+        val keyBoardWrap: FrameLayout = view.findViewById(R.id.keyboardWrap)
+        keyBoardView = layoutInflater.inflate(R.layout.keyboard_ru, null)
+        keyBoardWrap.addView(keyBoardView)
         levelTextView.text = resources.getString(R.string.level) + " ${level + 1}"
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
         game = Game {
