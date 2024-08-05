@@ -78,6 +78,15 @@
         <include
             android:id="@+id/keyboardView"
             layout="@layout/keyboard" />
+
+        <TextView
+            android:id="@+id/chooseText"
+            android:visibility="gone"
+            android:textSize="40sp"
+            android:gravity="center"
+            android:text="@string/choose_field_for_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </FrameLayout>
 
     <View

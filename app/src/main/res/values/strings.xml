@@ -9,6 +9,7 @@
     </string-array>
     <string name="level">level</string>
     <string name="totor">The number corresponds to the letter. You can click on an empty field and select a letter on the keyboard that will be in this field.</string>
+    <string name="choose_field_for_hint">click on the empty field</string>
 
     <string-array name="letter">
         <item name="first">l</item>

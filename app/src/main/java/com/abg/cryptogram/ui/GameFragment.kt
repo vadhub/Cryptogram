@@ -31,7 +31,12 @@ class GameFragment : Fragment() {
     private val codeWithTextViewList: LinkedList<Pair<TextView /* textview code */, Char /* letter */>> = LinkedList()
     private lateinit var navigator: Navigator
     private lateinit var game: Game
+    private var isHintEvent = false
     private val quoteViewModel: QuoteViewModel by activityViewModels()
+    private lateinit var saveConfig: SaveConfig
+    private lateinit var hintCountText: TextView
+    private lateinit var keyBoardView: View
+    private lateinit var hintTextView: TextView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,11 +55,11 @@ class GameFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val saveConfig = SaveConfig(requireContext())
+        saveConfig = SaveConfig(requireContext())
         val level = saveConfig.getLevel()
         val quote = quoteViewModel.getQuote(level)
         val levelTextView: TextView = view.findViewById(R.id.level)
-        val keyBoardView: View = view.findViewById(R.id.keyboardView)
+        keyBoardView = view.findViewById(R.id.keyboardView)
         levelTextView.text = resources.getString(R.string.level) + " ${level + 1}"
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
         game = Game {
@@ -73,18 +78,21 @@ class GameFragment : Fragment() {
                 }
             }
         }
-        game.setHint(saveConfig.getHint())
 
         val hint: ImageView = view.findViewById(R.id.hint)
-        val hintText: TextView = view.findViewById(R.id.hintCount)
+        hintTextView = view.findViewById(R.id.chooseText)
+        hintCountText = view.findViewById(R.id.hintCount)
+        game.setHint(saveConfig.getHint())
         val hintCount = game.getHint()
-        hintText.text = hintCount.toString()
+        hintCountText.text = hintCount.toString() +"x"
 
         hint.setOnClickListener {
             if (hintCount > 0) {
+                isHintEvent = true
                 game.minusHilth()
-                hintText.text = hintCount.toString()
+                hintCountText.text = hintCount.toString()+"x"
                 keyBoardView.visibility = View.GONE
+                hintTextView.visibility = View.VISIBLE
             } else {
                 // dialog with suggest to see adv video
             }
@@ -160,10 +168,7 @@ class GameFragment : Fragment() {
             editLetter.text = symbol.symbol.toString()
         } else {
             editLetter.setOnClickListener {
-                changeBackground(currentTextView, false)
-                changeBackground(editLetter, true)
-                currentTextView = editLetter
-                game.setLetter(symbol.symbol)
+                clickOnEmptyField(editLetter, symbol)
             }
             editLetter.text = ""
             emptyTextViewList.add(Pair(editLetter, symbol.symbol))
@@ -179,6 +184,22 @@ class GameFragment : Fragment() {
         editLetter.background = if (isSelected) thisContext.getDrawable(R.drawable.border) else null
     }
 
+    fun clickOnEmptyField(editLetter: TextView, symbol: Symbol) {
+        changeBackground(currentTextView, false)
+        changeBackground(editLetter, true)
+        currentTextView = editLetter
+        game.setLetter(symbol.symbol)
+        if (isHintEvent) {
+            hintEvent(symbol.symbol)
+        }
+    }
+
+    fun hintEvent(symbol: Char) {
+        game.minusHint(saveConfig)
+        hintCountText.text = game.getHint().toString() + "x"
+        showHintDialog(symbol)
+    }
+
     fun createSigh(symbol: Symbol): View {
         val view: View = layoutInflater.inflate(R.layout.item_sign, null)
         val editLetter = view.findViewById<TextView>(R.id.sign)
@@ -192,5 +213,13 @@ class GameFragment : Fragment() {
             it.first.text = ""
             codeWithTextViewList.remove(it)
         }
+    }
+
+    fun showHintDialog(symbol: Char) {
+        val hintDialogFragment = HintDialogFragment.newInstance(symbol)
+        hintDialogFragment.show(childFragmentManager, "Hint dialog")
+        keyBoardView.visibility = View.VISIBLE
+        hintTextView.visibility = View.GONE
+        isHintEvent = false
     }
 }

@@ -17,7 +17,6 @@ class SaveConfig(private val context: Context) {
         val ed: SharedPreferences.Editor = pref.edit()
         ed.putInt("level", level)
         ed.apply()
-
     }
 
     fun getLevel(): Int {
@@ -30,12 +29,11 @@ class SaveConfig(private val context: Context) {
         val ed: SharedPreferences.Editor = pref.edit()
         ed.putInt("hint", i)
         ed.apply()
-
     }
 
     fun getHint(): Int {
         pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
-        return pref.getInt("hint", 5)
+        return pref.getInt("hint", 3)
     }
 
     fun saveIsTutorComplete(isFirst: Boolean) {

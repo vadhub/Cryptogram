@@ -44,6 +44,7 @@ class KeyBoard {
     private lateinit var yu: TextView
     private lateinit var ya: TextView
 
+
     fun inflateKeyBoard(keyBoardView: View) {
         a = keyBoardView.findViewById(R.id.letterA)
         b = keyBoardView.findViewById(R.id.letterBlyat)

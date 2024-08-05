@@ -17,5 +17,6 @@
         <item name="third">о</item>
         <item name="fourth">в</item>
     </string-array>
+    <string name="choose_field_for_hint">нажмите на пустое поле</string>
 
 </resources>

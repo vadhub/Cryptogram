@@ -12,14 +12,20 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/hint_letter"
+            android:padding="20dp"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/totor" />
+            android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:id="@+id/word"
-            android:orientation="horizontal"
+        <TextView
+            android:id="@+id/ok_text"
+            android:textColor="@color/beige"
+            android:textSize="20sp"
+            android:text="ok"
+            android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>
