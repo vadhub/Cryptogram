@@ -8,13 +8,13 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@id/keyboardWrap"
+        app:layout_constraintBottom_toTopOf="@id/keyboardWrap_tutor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/sentence"
+            android:id="@+id/sentence_tutor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -22,19 +22,19 @@
     </ScrollView>
 
     <FrameLayout
-        android:id="@+id/keyboardWrap"
+        android:id="@+id/keyboardWrap_tutor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <include
-            android:id="@+id/keyboardView"
-            layout="@layout/keyboard" />
+            android:id="@+id/keyboardView_tutor"
+            layout="@layout/keyboard_ru" />
     </FrameLayout>
 
     <View
-        android:id="@+id/wrong"
+        android:id="@+id/wrong_tutor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0"

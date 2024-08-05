@@ -75,10 +75,6 @@
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <include
-            android:id="@+id/keyboardView"
-            layout="@layout/keyboard" />
-
         <TextView
             android:id="@+id/chooseText"
             android:visibility="gone"

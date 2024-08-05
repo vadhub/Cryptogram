@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/keyboard"
+    android:orientation="vertical"
+    android:layout_gravity="bottom"
+    android:background="@color/gray_light"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+        <TextView
+            android:id="@+id/Q"
+            style="@style/key"
+            android:text="Q" />
+
+        <TextView
+            android:id="@+id/W"
+            style="@style/key"
+            android:text="W" />
+        <TextView
+            android:id="@+id/E"
+            style="@style/key"
+            android:text="E" />
+        <TextView
+            android:id="@+id/R"
+            style="@style/key"
+            android:text="R" />
+        <TextView
+            android:id="@+id/T"
+            style="@style/key"
+            android:text="T" />
+        <TextView
+            android:id="@+id/Y"
+            style="@style/key"
+            android:text="Y" />
+        <TextView
+            android:id="@+id/U"
+            style="@style/key"
+            android:text="U" />
+        <TextView
+            android:id="@+id/I"
+            style="@style/key"
+            android:text="I" />
+        <TextView
+            android:id="@+id/O"
+            style="@style/key"
+            android:text="O" />
+
+        <TextView
+            android:id="@+id/P"
+            style="@style/key"
+            android:text="P" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="1"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/A"
+            style="@style/key"
+            android:text="A" />
+        <TextView
+            android:id="@+id/S"
+            style="@style/key"
+            android:text="S" />
+        <TextView
+            android:id="@+id/D"
+            style="@style/key"
+            android:text="D" />
+        <TextView
+            android:id="@+id/F"
+            style="@style/key"
+            android:text="F" />
+        <TextView
+            android:id="@+id/G"
+            style="@style/key"
+            android:text="G" />
+        <TextView
+            android:id="@+id/H"
+            style="@style/key"
+            android:text="H" />
+        <TextView
+            android:id="@+id/J"
+            style="@style/key"
+            android:text="J" />
+        <TextView
+            android:id="@+id/K"
+            style="@style/key"
+            android:text="K" />
+        <TextView
+            android:id="@+id/L"
+            style="@style/key"
+            android:text="L" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="1"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/Z"
+            style="@style/key"
+            android:text="Z" />
+        <TextView
+            android:id="@+id/X"
+            style="@style/key"
+            android:text="X" />
+        <TextView
+            android:id="@+id/C"
+            style="@style/key"
+            android:text="C" />
+        <TextView
+            android:id="@+id/V"
+            style="@style/key"
+            android:text="V" />
+        <TextView
+            android:id="@+id/B"
+            style="@style/key"
+            android:text="B" />
+        <TextView
+            android:id="@+id/N"
+            style="@style/key"
+            android:text="N" />
+        <TextView
+            android:id="@+id/M"
+            style="@style/key"
+            android:text="M" />
+    </LinearLayout>
+
+</LinearLayout>
