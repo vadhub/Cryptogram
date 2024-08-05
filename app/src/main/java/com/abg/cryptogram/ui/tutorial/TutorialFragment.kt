@@ -17,7 +17,7 @@ import com.abg.cryptogram.model.Symbol
 import com.abg.cryptogram.model.Word
 import com.abg.cryptogram.ui.GameFragment
 import com.abg.cryptogram.ui.LostFragment
-import com.abg.cryptogram.ui.keyboard.KeyBoard
+import com.abg.cryptogram.ui.keyboard.KeyBoardRU
 import com.abg.cryptogram.ui.keyboard.KeyBoardClickListener
 import java.util.LinkedList
 
@@ -49,7 +49,7 @@ class TutorialFragment : Fragment() {
         val saveConfig = SaveConfig(thisContext)
         val keyBoardView: View = view.findViewById(R.id.keyboardView_tutor)
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence_tutor)
-        val keyBoard = KeyBoard()
+        val keyBoard = KeyBoardRU()
         val wrongView: View = view.findViewById(R.id.wrong_tutor)
         createTutorDialog()
         game = Game {

@@ -13,7 +13,12 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        quoteViewModel.createListQuotes(resources.assets.open("test.csv"))
+        val fileName: String = if (resources.configuration.locale.language == "ru") {
+            "test.csv"
+        } else {
+            "test_en.csv"
+        }
+        quoteViewModel.createListQuotes(resources.assets.open(fileName))
         val saveConfig = SaveConfig(this)
         if (saveConfig.getIsTutorComplete()) {
             supportFragmentManager.beginTransaction()

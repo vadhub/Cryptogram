@@ -21,7 +21,9 @@ import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.model.MegaParser
 import com.abg.cryptogram.model.Symbol
 import com.abg.cryptogram.ui.keyboard.KeyBoard
+import com.abg.cryptogram.ui.keyboard.KeyBoardRU
 import com.abg.cryptogram.ui.keyboard.KeyBoardClickListener
+import com.abg.cryptogram.ui.keyboard.KeyBoardEN
 import java.util.LinkedList
 
 class GameFragment : Fragment() {
@@ -61,7 +63,16 @@ class GameFragment : Fragment() {
         val quote = quoteViewModel.getQuote(level)
         val levelTextView: TextView = view.findViewById(R.id.level)
         val keyBoardWrap: FrameLayout = view.findViewById(R.id.keyboardWrap)
-        keyBoardView = layoutInflater.inflate(R.layout.keyboard_ru, null)
+        val layoutKeyBoard: Int
+        val keyboard: KeyBoard
+        if (resources.configuration.locale.language == "ru") {
+            layoutKeyBoard = R.layout.keyboard_ru
+            keyboard = KeyBoardRU()
+        } else {
+            layoutKeyBoard = R.layout.keyboard_en
+            keyboard = KeyBoardEN()
+        }
+        keyBoardView = layoutInflater.inflate(layoutKeyBoard, null)
         keyBoardWrap.addView(keyBoardView)
         levelTextView.text = resources.getString(R.string.level) + " ${level + 1}"
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
@@ -102,14 +113,13 @@ class GameFragment : Fragment() {
         }
 
         val list = game.sentenceMapToListWords(MegaParser.insertSlashes(quote.quote.uppercase()), level)
-        val keyBoard = KeyBoard()
         val wrongView: View = view.findViewById(R.id.wrong)
         val livesView: View = view.findViewById(R.id.lives)
         val lives = Lives()
         lives.setLivesView(livesView)
 
         game.setAllConcreteLetterFindListener { letter, textView ->
-            keyBoard.killKey(textView)
+            keyboard.killKey(textView)
             clearAllCodeFromFindLetter(letter)
         }
 
@@ -144,8 +154,8 @@ class GameFragment : Fragment() {
             }
         }
 
-        keyBoard.inflateKeyBoard(keyBoardView)
-        keyBoard.setCLickListeners(keyBoardListener)
+        keyboard.inflateKeyBoard(keyBoardView)
+        keyboard.setCLickListeners(keyBoardListener)
     }
 
     fun createRow(listSymbols: List<Symbol>): LinearLayout  {
