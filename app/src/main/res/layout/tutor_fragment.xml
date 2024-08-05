@@ -30,7 +30,7 @@
 
         <include
             android:id="@+id/keyboardView"
-            layout="@layout/keyboard" />
+            layout="@layout/keyboard_ru" />
     </FrameLayout>
 
     <View
