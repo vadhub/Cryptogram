@@ -24,18 +24,6 @@ class SaveConfig(private val context: Context) {
         return pref.getInt("level", 0)
     }
 
-    fun saveHint(i: Int) {
-        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
-        val ed: SharedPreferences.Editor = pref.edit()
-        ed.putInt("hint", i)
-        ed.apply()
-    }
-
-    fun getHint(): Int {
-        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
-        return pref.getInt("hint", 3)
-    }
-
     fun saveIsTutorComplete(isFirst: Boolean) {
         pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
         val ed: SharedPreferences.Editor = pref.edit()

@@ -111,7 +111,7 @@ class KeyBoardRU : KeyBoard() {
         ya.setOnClickListener(keyBoard)
     }
 
-    fun tutorialKey(): LinkedList<TextView> {
+    override fun tutorialKey(): LinkedList<TextView> {
         val list = LinkedList<TextView>()
         list.add(d)
         list.add(z)

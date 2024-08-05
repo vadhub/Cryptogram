@@ -26,12 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <include
-            android:id="@+id/keyboardView_tutor"
-            layout="@layout/keyboard_ru" />
-    </FrameLayout>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <View
         android:id="@+id/wrong_tutor"

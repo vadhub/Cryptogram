@@ -6,10 +6,12 @@ import android.graphics.drawable.TransitionDrawable
 import android.view.View
 import android.widget.TextView
 import com.abg.cryptogram.R
+import java.util.LinkedList
 
 abstract class KeyBoard {
     abstract fun inflateKeyBoard(keyBoardView: View)
     abstract fun setCLickListeners(keyBoard: KeyBoardClickListener)
+    abstract fun tutorialKey() : LinkedList<TextView>
 
     fun killKey(textView: TextView) {
         val transition = TransitionDrawable(arrayOf(textView.context.getDrawable(R.drawable.empty), textView.context.getDrawable(
