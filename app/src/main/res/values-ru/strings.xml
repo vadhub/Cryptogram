@@ -10,5 +10,13 @@
         <item>В следующий раз повезет</item>
     </string-array>
     <string name="level">уровень</string>
+    <string name="totor">Номер соответствует букве. Вы можете нажать на пустое поле и выбрать букву на клавиатуре, которая будет в этом поле.</string>
+    <string-array name="letter">
+        <item name="first">с</item>
+        <item name="second">л</item>
+        <item name="third">о</item>
+        <item name="fourth">в</item>
+    </string-array>
+    <string name="choose_field_for_hint">нажмите на пустое поле</string>
 
 </resources>

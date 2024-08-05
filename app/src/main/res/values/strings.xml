@@ -8,5 +8,14 @@
         <item>Better luck next time</item>
     </string-array>
     <string name="level">level</string>
-    <!--    <test_quote>Упади семь раз и восемь раз поднимись</test_quote>-->
+    <string name="totor">The number corresponds to the letter. You can click on an empty field and select a letter on the keyboard that will be in this field.</string>
+    <string name="choose_field_for_hint">click on the empty field</string>
+
+    <string-array name="letter">
+        <item name="first">l</item>
+        <item name="second">e</item>
+        <item name="third">t</item>
+        <item name="fourth">r</item>
+    </string-array>
+
 </resources>

@@ -1,6 +1,5 @@
-package com.abg.cryptogram.data
+package com.abg.cryptogram.model
 
-import com.abg.cryptogram.model.Quote
 import java.io.InputStream
 
 class ParseCSV {

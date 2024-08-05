@@ -2,6 +2,7 @@ package com.abg.cryptogram.model
 
 import android.util.Log
 import android.widget.TextView
+import com.abg.cryptogram.data.SaveConfig
 import kotlin.random.Random
 
 class Game(private val gameStatus: (StatusGame) -> Unit) {
@@ -15,6 +16,27 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     private var letter = ' '
     private var notGuessed = 0
     private var frequency = mutableMapOf<Char, Int>()
+    private var hint = 3
+
+    fun setHint(hint: Int) {
+        this.hint = hint
+    }
+
+    fun minusHint(saveConfig: SaveConfig) {
+        if (hint > 0) {
+            saveConfig.saveHint(hint--)
+        }
+    }
+
+    fun setNotGuessed(i: Int) {
+        this.notGuessed = i
+    }
+
+    fun setFrequency(frequency: MutableMap<Char, Int>) {
+        this.frequency = frequency
+    }
+
+    fun getHint() = hint
 
     fun setAllConcreteLetterFindListener(allConcreteLetterFind: (letter: Char, TextView) -> Unit) {
         this.allConcreteLetterFindListener = allConcreteLetterFind
@@ -110,20 +132,23 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     }
 
     fun compareLetters(textView: TextView, candidate: Char): Boolean {
-        Log.d("##", candidate.toString())
         if (candidate == letter) {
-            notGuessed--
-            val count = frequency[candidate]
-            if (count != null) {
-                frequency[candidate] = count - 1
-                allConcreteLetterFind(frequency[candidate]!!, letter, textView)
-            }
-            if (notGuessed == 0) {
-                gameStatus.invoke(StatusGame.WIN)
-            }
+            rightLetter(textView, candidate)
             return true
         }
         return false
+    }
+
+    fun rightLetter(textView: TextView, candidate: Char) {
+        notGuessed--
+        val count = frequency[candidate]
+        if (count != null) {
+            frequency[candidate] = count - 1
+            allConcreteLetterFind(frequency[candidate]!!, letter, textView)
+        }
+        if (notGuessed == 0) {
+            gameStatus.invoke(StatusGame.WIN)
+        }
     }
 
     private fun changeCodeVisibleAllConcreteLetter(words: MutableList<Word>, letter: Char) {

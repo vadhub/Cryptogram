@@ -1,8 +1,13 @@
-package com.abg.cryptogram
+package com.abg.cryptogram.ui.keyboard
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.annotation.SuppressLint
 import android.graphics.drawable.TransitionDrawable
 import android.view.View
 import android.widget.TextView
+import com.abg.cryptogram.R
+import java.util.LinkedList
 
 class KeyBoard {
 
@@ -38,6 +43,7 @@ class KeyBoard {
     private lateinit var ae: TextView
     private lateinit var yu: TextView
     private lateinit var ya: TextView
+
 
     fun inflateKeyBoard(keyBoardView: View) {
         a = keyBoardView.findViewById(R.id.letterA)
@@ -109,8 +115,19 @@ class KeyBoard {
         ya.setOnClickListener(keyBoard)
     }
 
+    fun tutorialKey(): LinkedList<TextView> {
+        val list = LinkedList<TextView>()
+        list.add(d)
+        list.add(z)
+        list.add(i)
+        list.add(p)
+        return list
+    }
+
     fun killKey(textView: TextView) {
-        val transition = TransitionDrawable(arrayOf(textView.context.getDrawable(R.drawable.empty), textView.context.getDrawable(R.drawable.border_right)) )
+        val transition = TransitionDrawable(arrayOf(textView.context.getDrawable(R.drawable.empty), textView.context.getDrawable(
+            R.drawable.border_right
+        )) )
         textView.setOnClickListener {  }
         textView.isClickable = false
         textView.animate()
@@ -122,5 +139,21 @@ class KeyBoard {
                 textView.background = transition
                 textView.alpha = 0.3f
             }.start()
+    }
+
+    fun pulseAnimation(view: View) : ObjectAnimator {
+        val scaleDown: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
+            view,
+            PropertyValuesHolder.ofFloat("scaleX", 0.8f),
+            PropertyValuesHolder.ofFloat("scaleY", 0.8f)
+        )
+        scaleDown.setDuration(310)
+
+        scaleDown.repeatCount = ObjectAnimator.INFINITE
+        scaleDown.repeatMode = ObjectAnimator.REVERSE
+
+        scaleDown.start()
+
+        return scaleDown
     }
 }
