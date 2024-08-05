@@ -68,14 +68,14 @@ class TutorialIntroFragment : DialogFragment() {
         val view: View = layoutInflater.inflate(R.layout.item_letter, null)
         val editLetter = view.findViewById<TextView>(R.id.editLetter)
         val codeTextView = view.findViewById<TextView>(R.id.codeTextView)
-        if (symbol.selected) select(codeTextView, view.context)
+        if (symbol.selected) select(codeTextView)
         editLetter.text = symbol.char.toString()
         codeTextView.text = symbol.code.toString()
 
         return view
     }
 
-    fun select(editLetter: TextView, thisContext: Context) {
-        editLetter.background = thisContext.getDrawable(R.drawable.border_red)
+    fun select(editLetter: TextView) {
+        editLetter.setTextColor(resources.getColor(R.color.beige))
     }
 }
