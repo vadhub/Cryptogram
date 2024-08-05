@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar.LayoutParams
@@ -20,6 +20,7 @@ import com.abg.cryptogram.data.SaveConfig
 import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.model.MegaParser
 import com.abg.cryptogram.model.Symbol
+import com.abg.cryptogram.ui.dialog.HintDialogFragment
 import com.abg.cryptogram.ui.keyboard.KeyBoard
 import com.abg.cryptogram.ui.keyboard.KeyBoardRU
 import com.abg.cryptogram.ui.keyboard.KeyBoardClickListener
@@ -93,7 +94,7 @@ class GameFragment : Fragment() {
             }
         }
 
-        val hint: ImageView = view.findViewById(R.id.hint)
+        val hint: ImageButton = view.findViewById(R.id.hint)
         hintTextView = view.findViewById(R.id.chooseText)
         hintCountText = view.findViewById(R.id.hintCount)
         val hintCount = game.getHint()

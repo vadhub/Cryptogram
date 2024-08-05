@@ -20,5 +20,7 @@
 
     <string name="quote_tutor">Fall seven times and get up eight times</string>
     <string name="author_tutor">Japanese wisdom</string>
+    <string name="lang_ru">ru</string>
+    <string name="en">en</string>
 
 </resources>

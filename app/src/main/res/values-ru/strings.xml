@@ -20,5 +20,7 @@
     <string name="choose_field_for_hint">нажмите на пустое поле</string>
     <string name="quote_tutor">Упади семь раз и восемь раз поднимись</string>
     <string name="author_tutor">Японская мудрость</string>
+    <string name="lang_ru">ru</string>
+    <string name="en">en</string>
 
 </resources>

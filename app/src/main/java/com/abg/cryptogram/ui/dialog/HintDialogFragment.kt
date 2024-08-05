@@ -1,7 +1,5 @@
-package com.abg.cryptogram.ui
+package com.abg.cryptogram.ui.dialog
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
