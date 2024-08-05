@@ -18,4 +18,7 @@
         <item name="fourth">r</item>
     </string-array>
 
+    <string name="quote_tutor">Fall seven times and get up eight times</string>
+    <string name="author_tutor">Japanese wisdom</string>
+
 </resources>

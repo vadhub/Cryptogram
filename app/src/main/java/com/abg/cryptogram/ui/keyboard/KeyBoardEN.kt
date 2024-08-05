@@ -93,12 +93,12 @@ class KeyBoardEN : KeyBoard() {
         x.setOnClickListener(keyBoard)
     }
 
-    fun tutorialKey(): LinkedList<TextView> {
+    override fun tutorialKey(): LinkedList<TextView> {
         val list = LinkedList<TextView>()
-        list.add(d)
-        list.add(z)
+        list.add(l)
         list.add(i)
-        list.add(p)
+        list.add(e)
+        list.add(h)
         return list
     }
 }

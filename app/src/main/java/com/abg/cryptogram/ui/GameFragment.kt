@@ -96,15 +96,12 @@ class GameFragment : Fragment() {
         val hint: ImageView = view.findViewById(R.id.hint)
         hintTextView = view.findViewById(R.id.chooseText)
         hintCountText = view.findViewById(R.id.hintCount)
-        game.setHint(saveConfig.getHint())
         val hintCount = game.getHint()
         hintCountText.text = hintCount.toString() +"x"
 
         hint.setOnClickListener {
             if (hintCount > 0) {
                 isHintEvent = true
-                game.minusHilth()
-                hintCountText.text = hintCount.toString()+"x"
                 keyBoardView.visibility = View.GONE
                 hintTextView.visibility = View.VISIBLE
             } else {
@@ -208,7 +205,7 @@ class GameFragment : Fragment() {
     }
 
     fun hintEvent(symbol: Char) {
-        game.minusHint(saveConfig)
+        game.minusHint()
         hintCountText.text = game.getHint().toString() + "x"
         showHintDialog(symbol)
     }
