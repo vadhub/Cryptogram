@@ -19,7 +19,7 @@ import com.yandex.mobile.ads.interstitial.InterstitialAdLoader
 class MainActivity : AppCompatActivity(), Navigator {
     private var interstitialAd: InterstitialAd? = null
     private var interstitialAdLoader: InterstitialAdLoader? = null
-    private val idAd = "demo-interstitial-yandex" //
+    private val idAd = "R-M-11000227-1" // demo-interstitial-yandex
     private val quoteViewModel: QuoteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
