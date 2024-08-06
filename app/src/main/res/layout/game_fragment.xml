@@ -26,14 +26,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/hint"
+        android:backgroundTint="@android:color/transparent"
         app:layout_constraintTop_toTopOf="@id/livesWrap"
         app:layout_constraintBottom_toBottomOf="@id/livesWrap"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/settings"
         android:src="@drawable/emoji_objects_24dp_f9db78_fill1_wght200_grad0_opsz24"
         android:layout_width="wrap_content"
-        android:layout_marginEnd="12dp"
         android:layout_height="wrap_content"/>
 
     <FrameLayout
@@ -84,6 +84,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/settings"
+        android:backgroundTint="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="@id/livesWrap"
+        app:layout_constraintBottom_toBottomOf="@id/livesWrap"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/settings_24dp_ffffff_fill0_wght300_grad0_opsz24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <View
         android:id="@+id/wrong"

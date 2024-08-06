@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar.LayoutParams
@@ -18,8 +18,10 @@ import com.abg.cryptogram.QuoteViewModel
 import com.abg.cryptogram.R
 import com.abg.cryptogram.data.SaveConfig
 import com.abg.cryptogram.model.Game
+import com.abg.cryptogram.model.LocaleChange
 import com.abg.cryptogram.model.MegaParser
 import com.abg.cryptogram.model.Symbol
+import com.abg.cryptogram.ui.dialog.HintDialogFragment
 import com.abg.cryptogram.ui.keyboard.KeyBoard
 import com.abg.cryptogram.ui.keyboard.KeyBoardRU
 import com.abg.cryptogram.ui.keyboard.KeyBoardClickListener
@@ -57,7 +59,8 @@ class GameFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        navigator.destroyInterstitialAd()
+        navigator.loadInterstitialAd()
         saveConfig = SaveConfig(requireContext())
         val level = saveConfig.getLevel()
         val quote = quoteViewModel.getQuote(level)
@@ -65,13 +68,17 @@ class GameFragment : Fragment() {
         val keyBoardWrap: FrameLayout = view.findViewById(R.id.keyboardWrap)
         val layoutKeyBoard: Int
         val keyboard: KeyBoard
-        if (resources.configuration.locale.language == "ru") {
+        if (saveConfig.getLanguage() == "ru") {
+            LocaleChange.setLocale(view.context, "ru")
             layoutKeyBoard = R.layout.keyboard_ru
             keyboard = KeyBoardRU()
         } else {
+            LocaleChange.setLocale(view.context, "en")
             layoutKeyBoard = R.layout.keyboard_en
             keyboard = KeyBoardEN()
         }
+        val settings: ImageButton = view.findViewById(R.id.settings)
+        settings.setOnClickListener { showSettingsDialog() }
         keyBoardView = layoutInflater.inflate(layoutKeyBoard, null)
         keyBoardWrap.addView(keyBoardView)
         levelTextView.text = resources.getString(R.string.level) + " ${level + 1}"
@@ -93,7 +100,7 @@ class GameFragment : Fragment() {
             }
         }
 
-        val hint: ImageView = view.findViewById(R.id.hint)
+        val hint: ImageButton = view.findViewById(R.id.hint)
         hintTextView = view.findViewById(R.id.chooseText)
         hintCountText = view.findViewById(R.id.hintCount)
         val hintCount = game.getHint()
@@ -231,5 +238,11 @@ class GameFragment : Fragment() {
         keyBoardView.visibility = View.VISIBLE
         hintTextView.visibility = View.GONE
         isHintEvent = false
+    }
+
+    fun showSettingsDialog() {
+        val settingsDialogFragment = SettingsFragment()
+        settingsDialogFragment.setSaveConfig(saveConfig)
+        navigator.startFragment(settingsDialogFragment)
     }
 }

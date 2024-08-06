@@ -15,6 +15,7 @@ import com.abg.cryptogram.Navigator
 import com.abg.cryptogram.R
 import com.abg.cryptogram.data.SaveConfig
 import com.abg.cryptogram.model.Game
+import com.abg.cryptogram.model.LocaleChange
 import com.abg.cryptogram.model.MegaParser
 import com.abg.cryptogram.model.Symbol
 import com.abg.cryptogram.model.Word
@@ -77,7 +78,7 @@ class TutorialFragment : Fragment() {
                 }
             }
         }
-        if (resources.configuration.locale.language == "ru") {
+        if (LocaleChange.getLocale(view.context) == "ru") {
             layoutKeyBoard = R.layout.keyboard_ru
             keyboard = KeyBoardRU()
             list = tutorialRU()
