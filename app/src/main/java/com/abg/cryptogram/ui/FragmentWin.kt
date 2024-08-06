@@ -38,6 +38,7 @@ class FragmentWin : Fragment() {
         author.text = arguments?.getString("author")
 
         buttonNext.setOnClickListener {
+            navigator.showAd()
             navigator.startFragment(GameFragment())
         }
     }

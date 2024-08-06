@@ -59,7 +59,8 @@ class GameFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        navigator.destroyInterstitialAd()
+        navigator.loadInterstitialAd()
         saveConfig = SaveConfig(requireContext())
         val level = saveConfig.getLevel()
         val quote = quoteViewModel.getQuote(level)

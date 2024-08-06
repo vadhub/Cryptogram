@@ -34,6 +34,7 @@ class LostFragment : Fragment() {
         val lost = resources.getStringArray(R.array.lost)[Random.nextInt(2)]
         textLost.text = lost
         view.findViewById<Button>(R.id.restart).setOnClickListener {
+            navigator.showAd()
             navigator.startFragment(GameFragment())
         }
     }
