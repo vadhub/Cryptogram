@@ -2,6 +2,7 @@ package com.abg.cryptogram.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.abg.cryptogram.model.LocaleChange
 
 class SaveConfig(private val context: Context) {
     private lateinit var pref: SharedPreferences
@@ -34,6 +35,18 @@ class SaveConfig(private val context: Context) {
     fun getIsTutorComplete(): Boolean {
         pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
         return pref.getBoolean("tutor_complete", false)
+    }
+
+    fun changeLanguage(lang: String) {
+        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
+        val ed: SharedPreferences.Editor = pref.edit()
+        ed.putString("lang", lang)
+        ed.apply()
+    }
+
+    fun getLanguage(): String? {
+        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
+        return pref.getString("lang", LocaleChange.getLocale(context))
     }
 
 }

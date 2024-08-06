@@ -18,6 +18,7 @@ import com.abg.cryptogram.QuoteViewModel
 import com.abg.cryptogram.R
 import com.abg.cryptogram.data.SaveConfig
 import com.abg.cryptogram.model.Game
+import com.abg.cryptogram.model.LocaleChange
 import com.abg.cryptogram.model.MegaParser
 import com.abg.cryptogram.model.Symbol
 import com.abg.cryptogram.ui.dialog.HintDialogFragment
@@ -66,13 +67,17 @@ class GameFragment : Fragment() {
         val keyBoardWrap: FrameLayout = view.findViewById(R.id.keyboardWrap)
         val layoutKeyBoard: Int
         val keyboard: KeyBoard
-        if (resources.configuration.locale.language == "ru") {
+        if (saveConfig.getLanguage() == "ru") {
+            LocaleChange.setLocale(view.context, "ru")
             layoutKeyBoard = R.layout.keyboard_ru
             keyboard = KeyBoardRU()
         } else {
+            LocaleChange.setLocale(view.context, "en")
             layoutKeyBoard = R.layout.keyboard_en
             keyboard = KeyBoardEN()
         }
+        val settings: ImageButton = view.findViewById(R.id.settings)
+        settings.setOnClickListener { showSettingsDialog() }
         keyBoardView = layoutInflater.inflate(layoutKeyBoard, null)
         keyBoardWrap.addView(keyBoardView)
         levelTextView.text = resources.getString(R.string.level) + " ${level + 1}"
@@ -232,5 +237,11 @@ class GameFragment : Fragment() {
         keyBoardView.visibility = View.VISIBLE
         hintTextView.visibility = View.GONE
         isHintEvent = false
+    }
+
+    fun showSettingsDialog() {
+        val settingsDialogFragment = SettingsFragment()
+        settingsDialogFragment.setSaveConfig(saveConfig)
+        navigator.startFragment(settingsDialogFragment)
     }
 }

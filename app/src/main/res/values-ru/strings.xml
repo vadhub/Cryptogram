@@ -22,5 +22,6 @@
     <string name="author_tutor">Японская мудрость</string>
     <string name="lang_ru">ru</string>
     <string name="en">en</string>
+    <string name="change_language">Изменить язык</string>
 
 </resources>
