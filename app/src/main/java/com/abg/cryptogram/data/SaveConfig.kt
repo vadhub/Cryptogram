@@ -11,7 +11,7 @@ class SaveConfig(private val context: Context) {
 
     fun saveLevel(i: Int) {
         var level = i
-        if (i >= 81) {
+        if (i >= 111) {
             level = 0
         }
         pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
