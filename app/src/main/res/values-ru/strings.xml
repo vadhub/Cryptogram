@@ -23,5 +23,8 @@
     <string name="lang_ru">ru</string>
     <string name="en">en</string>
     <string name="change_language">Изменить язык</string>
+    <string name="continue_">продолжить</string>
+    <string name="repeat">начать заново</string>
+    <string name="lives_is_out">Жизни закончились</string>
 
 </resources>

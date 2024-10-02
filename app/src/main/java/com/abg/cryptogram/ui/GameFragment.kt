@@ -22,6 +22,7 @@ import com.abg.cryptogram.model.LocaleChange
 import com.abg.cryptogram.model.MegaParser
 import com.abg.cryptogram.model.Symbol
 import com.abg.cryptogram.ui.dialog.HintDialogFragment
+import com.abg.cryptogram.ui.dialog.RepeatGameDialogFragment
 import com.abg.cryptogram.ui.keyboard.KeyBoard
 import com.abg.cryptogram.ui.keyboard.KeyBoardRU
 import com.abg.cryptogram.ui.keyboard.KeyBoardClickListener
@@ -85,7 +86,15 @@ class GameFragment : Fragment() {
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
         game = Game {
             when(it) {
-                Game.StatusGame.GAME_OVER -> {navigator.startFragment(LostFragment())}
+                Game.StatusGame.GAME_OVER -> {
+                    showGameRepeatDialog (
+                        continueGame = {
+                            navigator.showAd()
+                        },
+                        repeatGame = {
+                            navigator.startFragment(LostFragment())
+                        })
+                }
                 Game.StatusGame.WIN -> {
                     saveConfig.saveLevel(saveConfig.getLevel()+1)
                     val fragmentWin = FragmentWin()
@@ -244,5 +253,10 @@ class GameFragment : Fragment() {
         val settingsDialogFragment = SettingsFragment()
         settingsDialogFragment.setSaveConfig(saveConfig)
         navigator.startFragment(settingsDialogFragment)
+    }
+
+    fun showGameRepeatDialog(continueGame: () -> Unit, repeatGame:() -> Unit) {
+        val gameRepeatDialog = RepeatGameDialogFragment(continueGame, repeatGame)
+        gameRepeatDialog.show(childFragmentManager, "RepeatDialog")
     }
 }
