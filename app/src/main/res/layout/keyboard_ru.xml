@@ -157,6 +157,10 @@
             android:id="@+id/letterYU"
             style="@style/key"
             android:text="Ю" />
+        <TextView
+            android:id="@+id/letterYO"
+            style="@style/key"
+            android:text="Ё" />
     </LinearLayout>
 
 </LinearLayout>

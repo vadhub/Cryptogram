@@ -39,7 +39,7 @@ class KeyBoardRU : KeyBoard() {
     private lateinit var ae: TextView
     private lateinit var yu: TextView
     private lateinit var ya: TextView
-
+    private lateinit var yo: TextView
 
     override fun inflateKeyBoard(keyBoardView: View) {
         a = keyBoardView.findViewById(R.id.letterA)
@@ -74,6 +74,7 @@ class KeyBoardRU : KeyBoard() {
         ae = keyBoardView.findViewById(R.id.letterAE)
         yu = keyBoardView.findViewById(R.id.letterYU)
         ya = keyBoardView.findViewById(R.id.letterYA)
+        yo = keyBoardView.findViewById(R.id.letterYO)
     }
 
     override fun setCLickListeners(keyBoard: KeyBoardClickListener) {
@@ -109,6 +110,7 @@ class KeyBoardRU : KeyBoard() {
         ae.setOnClickListener(keyBoard)
         yu.setOnClickListener(keyBoard)
         ya.setOnClickListener(keyBoard)
+        yo.setOnClickListener(keyBoard)
     }
 
     override fun tutorialKey(): LinkedList<TextView> {
