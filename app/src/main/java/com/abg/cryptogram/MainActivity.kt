@@ -1,5 +1,6 @@
 package com.abg.cryptogram
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,10 @@ import com.yandex.mobile.ads.interstitial.InterstitialAd
 import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener
 import com.yandex.mobile.ads.interstitial.InterstitialAdLoadListener
 import com.yandex.mobile.ads.interstitial.InterstitialAdLoader
+import ru.rustore.sdk.billingclient.RuStoreBillingClient
+import ru.rustore.sdk.billingclient.RuStoreBillingClientFactory
+import ru.rustore.sdk.billingclient.utils.pub.checkPurchasesAvailability
+import ru.rustore.sdk.core.feature.model.FeatureAvailabilityResult
 
 class MainActivity : AppCompatActivity(), Navigator {
     private var interstitialAd: InterstitialAd? = null
@@ -22,9 +27,28 @@ class MainActivity : AppCompatActivity(), Navigator {
     private val idAd = "R-M-11000227-1" // demo-interstitial-yandex
     private val quoteViewModel: QuoteViewModel by viewModels()
 
+    val billingClient: RuStoreBillingClient = RuStoreBillingClientFactory.create(
+        context = applicationContext,
+        consoleApplicationId = "2063565921",
+        deeplinkScheme = "com.abg.cryptogram.scheme",
+        // Опциональные параметры
+        themeProvider = null,
+        debugLogs  = false,
+        externalPaymentLoggerFactory = null,
+    )
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        billingClient.onNewIntent(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (savedInstanceState == null) {
+            billingClient.onNewIntent(intent)
+        }
 
         interstitialAdLoader = InterstitialAdLoader(this).apply {
             setAdLoadListener(object : InterstitialAdLoadListener {

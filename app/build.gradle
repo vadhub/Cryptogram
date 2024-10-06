@@ -40,6 +40,8 @@ dependencies {
     implementation 'com.yandex.android:mobileads:7.5.0'
     implementation "androidx.fragment:fragment-ktx:1.8.2"
 
+    implementation "ru.rustore.sdk:billingclient:6.1.0"
+
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
     implementation libs.material
