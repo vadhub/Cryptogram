@@ -1,7 +1,6 @@
 package com.abg.cryptogram.model
 
 import android.widget.TextView
-import com.abg.cryptogram.data.SaveConfig
 import kotlin.random.Random
 
 class Game(private val gameStatus: (StatusGame) -> Unit) {
@@ -21,6 +20,11 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         if (hint > 0) {
             hint--
         }
+    }
+
+    fun increaseHilth(): Int {
+        hilth = 1
+        return hilth
     }
 
     fun setNotGuessed(i: Int) {
