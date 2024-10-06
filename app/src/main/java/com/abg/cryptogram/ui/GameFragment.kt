@@ -84,12 +84,16 @@ class GameFragment : Fragment() {
         keyBoardWrap.addView(keyBoardView)
         levelTextView.text = resources.getString(R.string.level) + " ${level + 1}"
         val sentenceView = view.findViewById<LinearLayout>(R.id.sentence)
+        val livesView: View = view.findViewById(R.id.lives)
+        val lives = Lives()
+        lives.setLivesView(livesView)
         game = Game {
             when(it) {
                 Game.StatusGame.GAME_OVER -> {
                     showGameRepeatDialog (
                         continueGame = {
-                            navigator.showAd()
+                            //navigator.showAd()
+                            lives.setLives(game.increaseHilth())
                         },
                         repeatGame = {
                             navigator.startFragment(LostFragment())
@@ -127,9 +131,6 @@ class GameFragment : Fragment() {
 
         val list = game.sentenceMapToListWords(MegaParser.insertSlashes(quote.quote.uppercase()), level)
         val wrongView: View = view.findViewById(R.id.wrong)
-        val livesView: View = view.findViewById(R.id.lives)
-        val lives = Lives()
-        lives.setLivesView(livesView)
 
         game.setAllConcreteLetterFindListener { letter, textView ->
             keyboard.killKey(textView)
