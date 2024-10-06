@@ -92,7 +92,7 @@ class GameFragment : Fragment() {
                 Game.StatusGame.GAME_OVER -> {
                     showGameRepeatDialog (
                         continueGame = {
-                            //navigator.showAd()
+                            navigator.showAd()
                             lives.setLives(game.increaseHilth())
                         },
                         repeatGame = {
