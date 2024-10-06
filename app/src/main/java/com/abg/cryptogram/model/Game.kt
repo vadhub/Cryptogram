@@ -22,6 +22,10 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
         }
     }
 
+    fun setHints(hints: Int) {
+        this.hilth + hints
+    }
+
     fun increaseHilth(): Int {
         hilth = 1
         return hilth

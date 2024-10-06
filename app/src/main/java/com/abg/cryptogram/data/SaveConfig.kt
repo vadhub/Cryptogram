@@ -49,4 +49,16 @@ class SaveConfig(private val context: Context) {
         return pref.getString("lang", LocaleChange.getLocale(context))
     }
 
+    fun setHints(hints: Int) {
+        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
+        val ed: SharedPreferences.Editor = pref.edit()
+        ed.putInt("hints", hints)
+        ed.apply()
+    }
+
+    fun getHintsWithPurchase(): Int {
+        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
+        return pref.getInt("hints", 0)
+    }
+
 }

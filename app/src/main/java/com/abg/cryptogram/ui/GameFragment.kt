@@ -112,7 +112,7 @@ class GameFragment : Fragment() {
                 }
             }
         }
-
+        game.setHints(saveConfig.getHintsWithPurchase())
         val hint: ImageButton = view.findViewById(R.id.hint)
         hintTextView = view.findViewById(R.id.chooseText)
         hintCountText = view.findViewById(R.id.hintCount)
