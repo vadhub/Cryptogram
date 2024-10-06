@@ -43,6 +43,7 @@ class GameFragment : Fragment() {
     private lateinit var hintCountText: TextView
     private lateinit var keyBoardView: View
     private lateinit var hintTextView: TextView
+    private lateinit var adblok: ImageButton
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -60,6 +61,7 @@ class GameFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        adblok = view.findViewById(R.id.adblock)
         navigator.destroyInterstitialAd()
         navigator.loadInterstitialAd()
         saveConfig = SaveConfig(requireContext())
