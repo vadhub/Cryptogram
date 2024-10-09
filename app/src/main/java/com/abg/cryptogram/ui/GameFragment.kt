@@ -3,6 +3,7 @@ package com.abg.cryptogram.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +18,11 @@ import com.abg.cryptogram.Navigator
 import com.abg.cryptogram.QuoteViewModel
 import com.abg.cryptogram.R
 import com.abg.cryptogram.data.SaveConfig
+import com.abg.cryptogram.model.BillingClientProvider
 import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.model.LocaleChange
 import com.abg.cryptogram.model.MegaParser
+import com.abg.cryptogram.model.Purchase
 import com.abg.cryptogram.model.Symbol
 import com.abg.cryptogram.ui.dialog.HintDialogFragment
 import com.abg.cryptogram.ui.dialog.RepeatGameDialogFragment
@@ -27,6 +30,7 @@ import com.abg.cryptogram.ui.keyboard.KeyBoard
 import com.abg.cryptogram.ui.keyboard.KeyBoardRU
 import com.abg.cryptogram.ui.keyboard.KeyBoardClickListener
 import com.abg.cryptogram.ui.keyboard.KeyBoardEN
+import ru.rustore.sdk.billingclient.RuStoreBillingClient
 import java.util.LinkedList
 
 class GameFragment : Fragment() {
@@ -43,12 +47,14 @@ class GameFragment : Fragment() {
     private lateinit var hintCountText: TextView
     private lateinit var keyBoardView: View
     private lateinit var hintTextView: TextView
-    private lateinit var adblok: ImageButton
+    private lateinit var hintPurchase: ImageButton
+    private lateinit var billingClientProvider: BillingClientProvider
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         thisContext = context
         navigator = context as Navigator
+        billingClientProvider = context as BillingClientProvider
     }
 
     override fun onCreateView(
@@ -61,7 +67,12 @@ class GameFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adblok = view.findViewById(R.id.adblock)
+        val purchase = Purchase(view.context)
+        hintPurchase = view.findViewById(R.id.hintAdd)
+        availablePurchase(purchase)
+        hintPurchase.setOnClickListener {  }
+        getPurchase(billingClientProvider.billingClient(), purchase)
+
         navigator.destroyInterstitialAd()
         navigator.loadInterstitialAd()
         saveConfig = SaveConfig(requireContext())
@@ -261,5 +272,15 @@ class GameFragment : Fragment() {
     fun showGameRepeatDialog(continueGame: () -> Unit, repeatGame:() -> Unit) {
         val gameRepeatDialog = RepeatGameDialogFragment(continueGame, repeatGame)
         gameRepeatDialog.show(childFragmentManager, "RepeatDialog")
+    }
+
+    fun availablePurchase(purchase: Purchase) {
+        if (!purchase.getAvailablePurchase()) {
+            hintPurchase.visibility = View.GONE
+        }
+    }
+
+    fun getPurchase(billingClient: RuStoreBillingClient, purchase: Purchase) {
+        Log.d("ok", purchase.getPurchases(billingClient).toTypedArray().contentToString())
     }
 }

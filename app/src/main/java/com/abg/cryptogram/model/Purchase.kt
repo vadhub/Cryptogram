@@ -17,20 +17,22 @@ class Purchase(private val context: Context) {
         var isAvailable = false
         RuStoreBillingClient.checkPurchasesAvailability(context)
             .addOnSuccessListener { result ->
-                isAvailable = when (result) {
+                 when (result) {
                     FeatureAvailabilityResult.Available -> {
                         // Process purchases available
-                        true
+                        isAvailable = true
                     }
 
-                    is FeatureAvailabilityResult.Unavailable -> {
+                        is FeatureAvailabilityResult.Unavailable -> {
                         // Process purchases unavailable
-                        false
+                        Log.d("e", result.cause.toString())
+                        isAvailable = false
                     }
                 }
             }
             .addOnFailureListener { throwable ->
                 // Process unknown error
+                Log.d("e",throwable.message.toString())
                 isAvailable = false
             }
 
@@ -56,7 +58,7 @@ class Purchase(private val context: Context) {
         purchasesUseCase.purchaseProduct(
             productId = productId,
             orderId = UUID.randomUUID().toString(),
-            quantity = 1,
+            quantity = 3,
             developerPayload = null,
         ).addOnSuccessListener { paymentResult: PaymentResult ->
             when (paymentResult) {
