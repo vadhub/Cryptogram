@@ -1,6 +1,7 @@
 package com.abg.cryptogram.model
 
 import android.content.Context
+import android.util.Log
 import ru.rustore.sdk.billingclient.RuStoreBillingClient
 import ru.rustore.sdk.billingclient.model.product.Product
 import ru.rustore.sdk.billingclient.model.purchase.PaymentResult
@@ -44,13 +45,13 @@ class Purchase(private val context: Context) {
                productList = products
             }
             .addOnFailureListener { throwable: Throwable ->
-                // Process error
+                Log.w("purchase_get",throwable.cause)
             }
 
         return productList
     }
 
-    fun commitPurchase(billingClient: RuStoreBillingClient, productId: String) {
+    fun commitPurchase(billingClient: RuStoreBillingClient, productId: String, purchaseResult: PurchaseResult) {
         val purchasesUseCase: PurchasesUseCase = billingClient.purchases
         purchasesUseCase.purchaseProduct(
             productId = productId,
@@ -59,14 +60,14 @@ class Purchase(private val context: Context) {
             developerPayload = null,
         ).addOnSuccessListener { paymentResult: PaymentResult ->
             when (paymentResult) {
-                // Process PaymentResult
-                is PaymentResult.Cancelled -> TODO()
-                is PaymentResult.Failure -> TODO()
-                PaymentResult.InvalidPaymentState -> TODO()
-                is PaymentResult.Success -> TODO()
+                is PaymentResult.Cancelled -> purchaseResult.cancel()
+                is PaymentResult.Failure -> purchaseResult.fail()
+                PaymentResult.InvalidPaymentState -> purchaseResult.fail()
+                is PaymentResult.Success -> purchaseResult.success()
             }
         }.addOnFailureListener { throwable: Throwable ->
-            // Process error
+            purchaseResult.fail()
+            Log.w("purchase_commit",throwable.cause)
         }
     }
 }
