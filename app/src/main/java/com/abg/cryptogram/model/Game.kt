@@ -10,7 +10,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     }
 
     private var allConcreteLetterFindListener: (letter: Char, TextView) -> Unit = {_,_ ->}
-    private var hilth = 3
+    private var hilth = 2
     private var letter = ' '
     private var notGuessed = 0
     private var frequency = mutableMapOf<Char, Int>()
