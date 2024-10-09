@@ -19,22 +19,42 @@
 
     <TextView
         android:id="@+id/hintCount"
-        tools:text="5x"
-        app:layout_constraintTop_toTopOf="@+id/hint"
-        app:layout_constraintEnd_toStartOf="@+id/hint"
-        app:layout_constraintBottom_toBottomOf="@+id/hint"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/hint"
+        app:layout_constraintEnd_toEndOf="@+id/hint"
+        app:layout_constraintTop_toTopOf="@+id/hint"
+        tools:text="2x" />
 
     <ImageButton
         android:id="@+id/hint"
-        android:backgroundTint="@android:color/transparent"
-        app:layout_constraintTop_toTopOf="@id/livesWrap"
-        app:layout_constraintBottom_toBottomOf="@id/livesWrap"
-        app:layout_constraintEnd_toStartOf="@id/settings"
-        android:src="@drawable/emoji_objects_24dp_f9db78_fill1_wght200_grad0_opsz24"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@drawable/emoji_objects_24dp_f9db78_fill1_wght200_grad0_opsz24"
+        app:layout_constraintBottom_toBottomOf="@id/livesWrap"
+        app:layout_constraintStart_toEndOf="@+id/livesWrap"
+        app:layout_constraintTop_toTopOf="@id/livesWrap" />
+
+    <ImageButton
+        android:id="@+id/hintAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@drawable/emoji_objects_24dp_f9db78_fill1_wght200_grad0_opsz24"
+        app:layout_constraintBottom_toBottomOf="@id/livesWrap"
+        app:layout_constraintStart_toEndOf="@+id/hint"
+        app:layout_constraintTop_toTopOf="@id/livesWrap"
+        android:tint="@color/green_light" />
+
+    <TextView
+        android:id="@+id/hintCountPlus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/hintAdd"
+        app:layout_constraintEnd_toEndOf="@+id/hintAdd"
+        app:layout_constraintTop_toTopOf="@+id/hintAdd"
+        tools:text="+3" />
 
     <FrameLayout
         android:id="@+id/livesWrap"
@@ -92,15 +112,6 @@
         app:layout_constraintBottom_toBottomOf="@id/livesWrap"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/settings_24dp_ffffff_fill0_wght300_grad0_opsz24"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <ImageButton
-        android:id="@+id/adblock"
-        android:backgroundTint="@android:color/transparent"
-        app:layout_constraintTop_toBottomOf="@+id/settings"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ad_block_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
