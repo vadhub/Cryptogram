@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -23,17 +24,19 @@ import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.model.LocaleChange
 import com.abg.cryptogram.model.MegaParser
 import com.abg.cryptogram.model.Purchase
+import com.abg.cryptogram.model.PurchaseResult
 import com.abg.cryptogram.model.Symbol
+import com.abg.cryptogram.ui.dialog.BuyExtrHint
 import com.abg.cryptogram.ui.dialog.HintDialogFragment
 import com.abg.cryptogram.ui.dialog.RepeatGameDialogFragment
 import com.abg.cryptogram.ui.keyboard.KeyBoard
-import com.abg.cryptogram.ui.keyboard.KeyBoardRU
 import com.abg.cryptogram.ui.keyboard.KeyBoardClickListener
 import com.abg.cryptogram.ui.keyboard.KeyBoardEN
-import ru.rustore.sdk.billingclient.RuStoreBillingClient
+import com.abg.cryptogram.ui.keyboard.KeyBoardRU
+import ru.rustore.sdk.billingclient.model.purchase.PaymentResult
 import java.util.LinkedList
 
-class GameFragment : Fragment() {
+class GameFragment : Fragment(), PurchaseResult {
 
     private lateinit var thisContext: Context
     private lateinit var currentTextView: TextView
@@ -69,9 +72,13 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val purchase = Purchase(view.context)
         hintPurchase = view.findViewById(R.id.hintAdd)
+        var productId = ""
+        val billingClient = billingClientProvider.billingClient()
+        purchase.getPurchases(billingClient) { productId = it }
         availablePurchase(purchase)
-        hintPurchase.setOnClickListener {  }
-        getPurchase(billingClientProvider.billingClient(), purchase)
+        hintPurchase.setOnClickListener {
+            showBuyHintsDialog { purchase.commitPurchase(billingClient, productId, this) }
+        }
 
         navigator.destroyInterstitialAd()
         navigator.loadInterstitialAd()
@@ -125,12 +132,11 @@ class GameFragment : Fragment() {
                 }
             }
         }
-        game.setHints(saveConfig.getHintsWithPurchase())
         val hint: ImageButton = view.findViewById(R.id.hint)
         hintTextView = view.findViewById(R.id.chooseText)
         hintCountText = view.findViewById(R.id.hintCount)
-        val hintCount = game.getHint()
-        hintCountText.text = hintCount.toString() +"x"
+
+        val hintCount = hintUpdate()
 
         hint.setOnClickListener {
             if (hintCount > 0) {
@@ -183,6 +189,14 @@ class GameFragment : Fragment() {
 
         keyboard.inflateKeyBoard(keyBoardView)
         keyboard.setCLickListeners(keyBoardListener)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun hintUpdate(): Int {
+        game.setHints(saveConfig.getHintsWithPurchase())
+        val hintCount = game.getHint()
+        hintCountText.text = hintCount.toString() + "x"
+        return hintCount
     }
 
     fun createRow(listSymbols: List<Symbol>): LinearLayout  {
@@ -269,18 +283,44 @@ class GameFragment : Fragment() {
         navigator.startFragment(settingsDialogFragment)
     }
 
+    fun showBuyHintsDialog(buy:() -> Unit) {
+        val buyExtrHint = BuyExtrHint(buy)
+        buyExtrHint.show(childFragmentManager, "BuyDialog")
+    }
+
     fun showGameRepeatDialog(continueGame: () -> Unit, repeatGame:() -> Unit) {
         val gameRepeatDialog = RepeatGameDialogFragment(continueGame, repeatGame)
         gameRepeatDialog.show(childFragmentManager, "RepeatDialog")
     }
 
     fun availablePurchase(purchase: Purchase) {
-        if (!purchase.getAvailablePurchase()) {
-            hintPurchase.visibility = View.GONE
+        purchase.getAvailablePurchase {
+            hintPurchase.visibility = View.VISIBLE
         }
     }
 
-    fun getPurchase(billingClient: RuStoreBillingClient, purchase: Purchase) {
-        Log.d("ok", purchase.getPurchases(billingClient).toTypedArray().contentToString())
+    override fun success(paymentResult: PaymentResult.Success) {
+        val hintCount = saveConfig.getHintsWithPurchase()
+        saveConfig.setHints(hintCount + 3)
+        hintUpdate()
+        Log.d("@succsess", "${paymentResult.sandbox} ${paymentResult.purchaseId} $hintCount")
+    }
+
+    override fun cancel() {
+        Toast.makeText(thisContext, "Purchase cancel", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun fail(paymentResult: PaymentResult.Failure) {
+        Toast.makeText(thisContext, "Purchase failed", Toast.LENGTH_SHORT).show()
+        val hintCount = saveConfig.getHintsWithPurchase()
+        saveConfig.setHints(hintCount + 3)
+        hintUpdate()
+        Log.d("@@@qqq", hintCount.toString())
+        Log.e("@payment", paymentResult.errorCode.toString())
+    }
+
+    override fun fail() {
+        Toast.makeText(thisContext, "Purchase failed", Toast.LENGTH_SHORT).show()
+        Log.e("@payment", "fail")
     }
 }

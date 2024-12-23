@@ -23,7 +23,7 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     }
 
     fun setHints(hints: Int) {
-        this.hilth + hints
+        this.hint + hints
     }
 
     fun increaseHilth(): Int {

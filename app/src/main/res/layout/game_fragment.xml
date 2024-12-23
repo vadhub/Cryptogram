@@ -44,8 +44,10 @@
         android:src="@drawable/emoji_objects_24dp_f9db78_fill1_wght200_grad0_opsz24"
         app:layout_constraintBottom_toBottomOf="@id/livesWrap"
         app:layout_constraintStart_toEndOf="@+id/hint"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintTop_toTopOf="@id/livesWrap"
-        android:tint="@color/green_light" />
+        app:tint="@color/green_light" />
 
     <TextView
         android:id="@+id/hintCountPlus"
@@ -54,7 +56,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/hintAdd"
         app:layout_constraintEnd_toEndOf="@+id/hintAdd"
         app:layout_constraintTop_toTopOf="@+id/hintAdd"
-        tools:text="+3" />
+        android:text="+3" />
 
     <FrameLayout
         android:id="@+id/livesWrap"

@@ -3,6 +3,14 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
+def debugStoreFile = rootProject.file("/home/vadim/Desktop/apps/cryptogram/cert/cryptogram.jks")
+def debugPropsFile = rootProject.file("/home/vadim/Desktop/apps/cryptogram/cert/release.properties")
+def debugProps = new Properties()
+
+debugPropsFile.withInputStream { stream ->
+    debugProps.load(stream)
+}
+
 android {
     namespace 'com.abg.cryptogram'
     compileSdk 34
@@ -15,10 +23,20 @@ android {
         versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        signingConfigs {
+            debug {
+                storeFile debugStoreFile
+                keyAlias debugProps.getProperty("key_alias")
+                keyPassword debugProps.getProperty("key_password")
+                storePassword debugProps.getProperty("store_password")
+            }
+        }
     }
 
     buildTypes {
         debug {
+            signingConfig signingConfigs.debug
             minifyEnabled true
         }
         release {
