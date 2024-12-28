@@ -196,6 +196,7 @@ class GameFragment : Fragment(), PurchaseResult {
         game.setHints(saveConfig.getHintsWithPurchase())
         val hintCount = game.getHint()
         hintCountText.text = hintCount.toString() + "x"
+        Log.d("ddd", hintCount.toString())
         return hintCount
     }
 
@@ -249,7 +250,7 @@ class GameFragment : Fragment(), PurchaseResult {
     }
 
     fun hintEvent(symbol: Char) {
-        game.minusHint()
+        game.minusHint(saveConfig)
         hintCountText.text = game.getHint().toString() + "x"
         showHintDialog(symbol)
     }
@@ -300,10 +301,9 @@ class GameFragment : Fragment(), PurchaseResult {
     }
 
     override fun success(paymentResult: PaymentResult.Success) {
-        val hintCount = saveConfig.getHintsWithPurchase()
-        saveConfig.setHints(hintCount + 3)
+        saveConfig.setHints(saveConfig.getHintsWithPurchase() + 3)
         hintUpdate()
-        Log.d("@succsess", "${paymentResult.sandbox} ${paymentResult.purchaseId} $hintCount")
+        Log.d("@succsess", "${paymentResult.sandbox} ${paymentResult.purchaseId} ${saveConfig.getHintsWithPurchase()}")
     }
 
     override fun cancel() {
@@ -312,10 +312,6 @@ class GameFragment : Fragment(), PurchaseResult {
 
     override fun fail(paymentResult: PaymentResult.Failure) {
         Toast.makeText(thisContext, "Purchase failed", Toast.LENGTH_SHORT).show()
-        val hintCount = saveConfig.getHintsWithPurchase()
-        saveConfig.setHints(hintCount + 3)
-        hintUpdate()
-        Log.d("@@@qqq", hintCount.toString())
         Log.e("@payment", paymentResult.errorCode.toString())
     }
 
