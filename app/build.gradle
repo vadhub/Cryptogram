@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
-def debugStoreFile = rootProject.file("/home/vadim/Desktop/apps/cryptogram/cert/cryptogram.jks")
-def debugPropsFile = rootProject.file("/home/vadim/Desktop/apps/cryptogram/cert/release.properties")
+def debugStoreFile = rootProject.file("cert/cryptogram.jks")
+def debugPropsFile = rootProject.file("cert/release.properties")
 def debugProps = new Properties()
 
 debugPropsFile.withInputStream { stream ->
@@ -19,8 +19,8 @@ android {
         applicationId "com.abg.cryptogram"
         minSdk 23
         targetSdk 34
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 8
+        versionName "1.0.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -55,7 +55,7 @@ android {
 
 dependencies {
 
-    implementation 'com.yandex.android:mobileads:7.5.0'
+    implementation 'com.yandex.android:mobileads:7.8.1'
     implementation "androidx.fragment:fragment-ktx:1.8.2"
 
     implementation "ru.rustore.sdk:billingclient:6.1.0"

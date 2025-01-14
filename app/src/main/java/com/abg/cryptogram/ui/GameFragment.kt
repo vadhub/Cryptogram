@@ -48,6 +48,7 @@ class GameFragment : Fragment(), PurchaseResult {
     private val quoteViewModel: QuoteViewModel by activityViewModels()
     private lateinit var saveConfig: SaveConfig
     private lateinit var hintCountText: TextView
+    private lateinit var hintBuyText: TextView
     private lateinit var keyBoardView: View
     private lateinit var hintTextView: TextView
     private lateinit var hintPurchase: ImageButton
@@ -70,6 +71,7 @@ class GameFragment : Fragment(), PurchaseResult {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        hintBuyText = view.findViewById(R.id.hintCountPlus)
         val purchase = Purchase(view.context)
         hintPurchase = view.findViewById(R.id.hintAdd)
         var productId = ""
@@ -297,6 +299,7 @@ class GameFragment : Fragment(), PurchaseResult {
     fun availablePurchase(purchase: Purchase) {
         purchase.getAvailablePurchase {
             hintPurchase.visibility = View.VISIBLE
+            hintBuyText.visibility = View.VISIBLE
         }
     }
 

@@ -54,6 +54,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/hintAdd"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/hintAdd"
         app:layout_constraintTop_toTopOf="@+id/hintAdd"
         android:text="+3" />
