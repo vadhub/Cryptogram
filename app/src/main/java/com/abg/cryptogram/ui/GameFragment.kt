@@ -40,7 +40,10 @@ class GameFragment : Fragment(), PurchaseResult {
 
     private lateinit var thisContext: Context
     private lateinit var currentTextView: TextView
-    private val emptyTextViewList: LinkedList<Pair<TextView, Char>> = LinkedList()
+    private val emptyTextViewList: MutableList<Pair<TextView, Char>> = ArrayList()
+    private var currentIndex = 0
+    private var indexSymbol = 0 // index for fill
+
     private val codeWithTextViewList: LinkedList<Pair<TextView /* textview code */, Char /* letter */>> = LinkedList()
     private lateinit var navigator: Navigator
     private lateinit var game: Game
@@ -161,24 +164,26 @@ class GameFragment : Fragment(), PurchaseResult {
         for (i in 0 until list.size) {
             sentenceView.addView(createRow(list[i].letters))
         }
-        val first = emptyTextViewList.peek()
-        if (first != null) {
-            currentTextView = first.first
-            changeBackground(currentTextView, true)
-            game.setLetter(emptyTextViewList.element().second)
-        }
+
+        val first = emptyTextViewList[currentIndex]
+        currentTextView = first.first
+        changeBackground(currentTextView, true)
+        game.setLetter(first.second)
 
         val keyBoardListener = KeyBoardClickListener {textview, letter ->
             if (game.compareLetters(textview, letter)) {
                 currentTextView.text = letter.toString()
                 currentTextView.setOnClickListener(null /* remove click for forbid selected */)
                 changeBackground(currentTextView, false)
-                emptyTextViewList.remove(Pair(currentTextView, letter))
-                val letterPair = emptyTextViewList.peek()
-                if (letterPair != null) {
-                    currentTextView = letterPair.first
+                emptyTextViewList.removeAt(currentIndex)
+
+                if (emptyTextViewList.isNotEmpty()) {
+                    if (currentIndex >= emptyTextViewList.size) {
+                        currentIndex = 0
+                    }
+                    currentTextView = emptyTextViewList[currentIndex].first
                     changeBackground(currentTextView, true)
-                    game.setLetter(emptyTextViewList.element().second)
+                    game.setLetter(emptyTextViewList[currentIndex].second)
                 }
             } else {
                 lives.setLives(game.minusHilth())
@@ -229,6 +234,7 @@ class GameFragment : Fragment(), PurchaseResult {
             }
             editLetter.text = ""
             emptyTextViewList.add(Pair(editLetter, symbol.symbol))
+            indexSymbol++
         }
         codeWithTextViewList.add(Pair(codeTextView, symbol.symbol))
         codeTextView.text = symbol.code.toString()
@@ -243,7 +249,11 @@ class GameFragment : Fragment(), PurchaseResult {
 
     fun clickOnEmptyField(editLetter: TextView, symbol: Symbol) {
         changeBackground(currentTextView, false)
+
         changeBackground(editLetter, true)
+        currentIndex = emptyTextViewList.indexOfFirst { it.first == editLetter }
+        if (currentIndex == -1) currentIndex = 0
+
         currentTextView = editLetter
         game.setLetter(symbol.symbol)
         if (isHintEvent) {
