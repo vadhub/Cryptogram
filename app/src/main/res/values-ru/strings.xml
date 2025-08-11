@@ -26,5 +26,7 @@
     <string name="continue_">продолжить</string>
     <string name="repeat">начать заново</string>
     <string name="lives_is_out">Жизни закончились</string>
+    <string name="buy_additional_tips">Купить дополнительные подсказки</string>
+    <string name="_3_hints_for_18">3 подсказки за 18₽</string>
 
 </resources>

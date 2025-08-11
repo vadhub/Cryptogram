@@ -1,10 +1,13 @@
 package com.abg.cryptogram
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.abg.cryptogram.data.SaveConfig
+import com.abg.cryptogram.model.BillingClientProvider
 import com.abg.cryptogram.ui.GameFragment
 import com.abg.cryptogram.ui.tutorial.TutorialFragment
 import com.yandex.mobile.ads.common.AdError
@@ -15,16 +18,41 @@ import com.yandex.mobile.ads.interstitial.InterstitialAd
 import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener
 import com.yandex.mobile.ads.interstitial.InterstitialAdLoadListener
 import com.yandex.mobile.ads.interstitial.InterstitialAdLoader
+import ru.rustore.sdk.billingclient.RuStoreBillingClient
+import ru.rustore.sdk.billingclient.RuStoreBillingClientFactory
 
-class MainActivity : AppCompatActivity(), Navigator {
+
+class MainActivity : AppCompatActivity(), Navigator, BillingClientProvider {
     private var interstitialAd: InterstitialAd? = null
     private var interstitialAdLoader: InterstitialAdLoader? = null
     private val idAd = "R-M-11000227-1" // demo-interstitial-yandex
     private val quoteViewModel: QuoteViewModel by viewModels()
 
+    val billingClient: RuStoreBillingClient by lazy {
+        RuStoreBillingClientFactory.create(
+            context = applicationContext,
+            consoleApplicationId = "2063565921",
+            deeplinkScheme = "com.abg.cryptogram.scheme",
+            // Опциональные параметры
+            themeProvider = null,
+            debugLogs = false,
+            externalPaymentLoggerFactory = null,
+        )
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        billingClient.onNewIntent(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        if (savedInstanceState == null) {
+            billingClient.onNewIntent(intent)
+        }
 
         interstitialAdLoader = InterstitialAdLoader(this).apply {
             setAdLoadListener(object : InterstitialAdLoadListener {
@@ -69,6 +97,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                 override fun onAdShown() {
                     // Called when ad is shown.
                 }
+
                 override fun onAdFailedToShow(adError: AdError) {
                     // Called when an InterstitialAd failed to show.
                     // Clean resources after Ad dismissed
@@ -78,6 +107,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                     // Now you can preload the next interstitial ad.
                     loadInterstitialAd()
                 }
+
                 override fun onAdDismissed() {
                     // Called when ad is dismissed.
                     // Clean resources after Ad dismissed
@@ -87,9 +117,11 @@ class MainActivity : AppCompatActivity(), Navigator {
                     // Now you can preload the next interstitial ad.
                     loadInterstitialAd()
                 }
+
                 override fun onAdClicked() {
                     // Called when a click is recorded for an ad.
                 }
+
                 override fun onAdImpression(impressionData: ImpressionData?) {
                     // Called when an impression is recorded for an ad.
                 }
@@ -109,4 +141,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         interstitialAd?.setAdEventListener(null)
         interstitialAd = null
     }
+
+    override fun billingClient(): RuStoreBillingClient = billingClient
 }

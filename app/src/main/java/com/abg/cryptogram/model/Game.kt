@@ -1,6 +1,8 @@
 package com.abg.cryptogram.model
 
+import android.util.Log
 import android.widget.TextView
+import com.abg.cryptogram.data.SaveConfig
 import kotlin.random.Random
 
 class Game(private val gameStatus: (StatusGame) -> Unit) {
@@ -16,10 +18,18 @@ class Game(private val gameStatus: (StatusGame) -> Unit) {
     private var frequency = mutableMapOf<Char, Int>()
     private var hint = 3
 
-    fun minusHint() {
+    fun minusHint(saveConfig: SaveConfig) {
+        if (saveConfig.getHintsWithPurchase() > 0) {
+            saveConfig.setHints(saveConfig.getHintsWithPurchase() - 1)
+        }
         if (hint > 0) {
             hint--
         }
+    }
+
+    fun setHints(hints: Int) {
+        hint += hints
+        Log.d("@@hint", hint.toString())
     }
 
     fun increaseHilth(): Int {

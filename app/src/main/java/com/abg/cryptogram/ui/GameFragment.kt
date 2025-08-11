@@ -3,6 +3,7 @@ package com.abg.cryptogram.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar.LayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,23 +19,31 @@ import com.abg.cryptogram.Navigator
 import com.abg.cryptogram.QuoteViewModel
 import com.abg.cryptogram.R
 import com.abg.cryptogram.data.SaveConfig
+import com.abg.cryptogram.model.BillingClientProvider
 import com.abg.cryptogram.model.Game
 import com.abg.cryptogram.model.LocaleChange
 import com.abg.cryptogram.model.MegaParser
+import com.abg.cryptogram.model.Purchase
+import com.abg.cryptogram.model.PurchaseResult
 import com.abg.cryptogram.model.Symbol
+import com.abg.cryptogram.ui.dialog.BuyExtrHint
 import com.abg.cryptogram.ui.dialog.HintDialogFragment
 import com.abg.cryptogram.ui.dialog.RepeatGameDialogFragment
 import com.abg.cryptogram.ui.keyboard.KeyBoard
-import com.abg.cryptogram.ui.keyboard.KeyBoardRU
 import com.abg.cryptogram.ui.keyboard.KeyBoardClickListener
 import com.abg.cryptogram.ui.keyboard.KeyBoardEN
+import com.abg.cryptogram.ui.keyboard.KeyBoardRU
+import ru.rustore.sdk.billingclient.model.purchase.PaymentResult
 import java.util.LinkedList
 
-class GameFragment : Fragment() {
+class GameFragment : Fragment(), PurchaseResult {
 
     private lateinit var thisContext: Context
     private lateinit var currentTextView: TextView
-    private val emptyTextViewList: LinkedList<Pair<TextView, Char>> = LinkedList()
+    private val emptyTextViewList: MutableList<Pair<TextView, Char>> = ArrayList()
+    private var currentIndex = 0
+    private var indexSymbol = 0 // index for fill
+
     private val codeWithTextViewList: LinkedList<Pair<TextView /* textview code */, Char /* letter */>> = LinkedList()
     private lateinit var navigator: Navigator
     private lateinit var game: Game
@@ -41,13 +51,17 @@ class GameFragment : Fragment() {
     private val quoteViewModel: QuoteViewModel by activityViewModels()
     private lateinit var saveConfig: SaveConfig
     private lateinit var hintCountText: TextView
+    private lateinit var hintBuyText: TextView
     private lateinit var keyBoardView: View
     private lateinit var hintTextView: TextView
+    private lateinit var hintPurchase: ImageButton
+    private lateinit var billingClientProvider: BillingClientProvider
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         thisContext = context
         navigator = context as Navigator
+        billingClientProvider = context as BillingClientProvider
     }
 
     override fun onCreateView(
@@ -60,6 +74,17 @@ class GameFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        hintBuyText = view.findViewById(R.id.hintCountPlus)
+        val purchase = Purchase(view.context)
+        hintPurchase = view.findViewById(R.id.hintAdd)
+        var productId = ""
+        val billingClient = billingClientProvider.billingClient()
+        purchase.getPurchases(billingClient) { productId = it }
+        availablePurchase(purchase)
+        hintPurchase.setOnClickListener {
+            showBuyHintsDialog { purchase.commitPurchase(billingClient, productId, this) }
+        }
+
         navigator.destroyInterstitialAd()
         navigator.loadInterstitialAd()
         saveConfig = SaveConfig(requireContext())
@@ -112,12 +137,11 @@ class GameFragment : Fragment() {
                 }
             }
         }
-
         val hint: ImageButton = view.findViewById(R.id.hint)
         hintTextView = view.findViewById(R.id.chooseText)
         hintCountText = view.findViewById(R.id.hintCount)
-        val hintCount = game.getHint()
-        hintCountText.text = hintCount.toString() +"x"
+
+        val hintCount = hintUpdate()
 
         hint.setOnClickListener {
             if (hintCount > 0) {
@@ -140,24 +164,26 @@ class GameFragment : Fragment() {
         for (i in 0 until list.size) {
             sentenceView.addView(createRow(list[i].letters))
         }
-        val first = emptyTextViewList.peek()
-        if (first != null) {
-            currentTextView = first.first
-            changeBackground(currentTextView, true)
-            game.setLetter(emptyTextViewList.element().second)
-        }
+
+        val first = emptyTextViewList[currentIndex]
+        currentTextView = first.first
+        changeBackground(currentTextView, true)
+        game.setLetter(first.second)
 
         val keyBoardListener = KeyBoardClickListener {textview, letter ->
             if (game.compareLetters(textview, letter)) {
                 currentTextView.text = letter.toString()
                 currentTextView.setOnClickListener(null /* remove click for forbid selected */)
                 changeBackground(currentTextView, false)
-                emptyTextViewList.remove(Pair(currentTextView, letter))
-                val letterPair = emptyTextViewList.peek()
-                if (letterPair != null) {
-                    currentTextView = letterPair.first
+                emptyTextViewList.removeAt(currentIndex)
+
+                if (emptyTextViewList.isNotEmpty()) {
+                    if (currentIndex >= emptyTextViewList.size) {
+                        currentIndex = 0
+                    }
+                    currentTextView = emptyTextViewList[currentIndex].first
                     changeBackground(currentTextView, true)
-                    game.setLetter(emptyTextViewList.element().second)
+                    game.setLetter(emptyTextViewList[currentIndex].second)
                 }
             } else {
                 lives.setLives(game.minusHilth())
@@ -170,6 +196,15 @@ class GameFragment : Fragment() {
 
         keyboard.inflateKeyBoard(keyBoardView)
         keyboard.setCLickListeners(keyBoardListener)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun hintUpdate(): Int {
+        game.setHints(saveConfig.getHintsWithPurchase())
+        val hintCount = game.getHint()
+        hintCountText.text = hintCount.toString() + "x"
+        Log.d("ddd", hintCount.toString())
+        return hintCount
     }
 
     fun createRow(listSymbols: List<Symbol>): LinearLayout  {
@@ -199,6 +234,7 @@ class GameFragment : Fragment() {
             }
             editLetter.text = ""
             emptyTextViewList.add(Pair(editLetter, symbol.symbol))
+            indexSymbol++
         }
         codeWithTextViewList.add(Pair(codeTextView, symbol.symbol))
         codeTextView.text = symbol.code.toString()
@@ -213,7 +249,11 @@ class GameFragment : Fragment() {
 
     fun clickOnEmptyField(editLetter: TextView, symbol: Symbol) {
         changeBackground(currentTextView, false)
+
         changeBackground(editLetter, true)
+        currentIndex = emptyTextViewList.indexOfFirst { it.first == editLetter }
+        if (currentIndex == -1) currentIndex = 0
+
         currentTextView = editLetter
         game.setLetter(symbol.symbol)
         if (isHintEvent) {
@@ -222,7 +262,7 @@ class GameFragment : Fragment() {
     }
 
     fun hintEvent(symbol: Char) {
-        game.minusHint()
+        game.minusHint(saveConfig)
         hintCountText.text = game.getHint().toString() + "x"
         showHintDialog(symbol)
     }
@@ -256,8 +296,40 @@ class GameFragment : Fragment() {
         navigator.startFragment(settingsDialogFragment)
     }
 
+    fun showBuyHintsDialog(buy:() -> Unit) {
+        val buyExtrHint = BuyExtrHint(buy)
+        buyExtrHint.show(childFragmentManager, "BuyDialog")
+    }
+
     fun showGameRepeatDialog(continueGame: () -> Unit, repeatGame:() -> Unit) {
         val gameRepeatDialog = RepeatGameDialogFragment(continueGame, repeatGame)
         gameRepeatDialog.show(childFragmentManager, "RepeatDialog")
+    }
+
+    fun availablePurchase(purchase: Purchase) {
+        purchase.getAvailablePurchase {
+            hintPurchase.visibility = View.VISIBLE
+            hintBuyText.visibility = View.VISIBLE
+        }
+    }
+
+    override fun success(paymentResult: PaymentResult.Success) {
+        saveConfig.setHints(saveConfig.getHintsWithPurchase() + 3)
+        hintUpdate()
+        Log.d("@succsess", "${paymentResult.sandbox} ${paymentResult.purchaseId} ${saveConfig.getHintsWithPurchase()}")
+    }
+
+    override fun cancel() {
+        Toast.makeText(thisContext, "Purchase cancel", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun fail(paymentResult: PaymentResult.Failure) {
+        Toast.makeText(thisContext, "Purchase failed", Toast.LENGTH_SHORT).show()
+        Log.e("@payment", paymentResult.errorCode.toString())
+    }
+
+    override fun fail() {
+        Toast.makeText(thisContext, "Purchase failed", Toast.LENGTH_SHORT).show()
+        Log.e("@payment", "fail")
     }
 }

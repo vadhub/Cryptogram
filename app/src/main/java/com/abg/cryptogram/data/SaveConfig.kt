@@ -11,7 +11,7 @@ class SaveConfig(private val context: Context) {
 
     fun saveLevel(i: Int) {
         var level = i
-        if (i >= 111) {
+        if (i >= 112) {
             level = 0
         }
         pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
@@ -47,6 +47,18 @@ class SaveConfig(private val context: Context) {
     fun getLanguage(): String? {
         pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
         return pref.getString("lang", LocaleChange.getLocale(context))
+    }
+
+    fun setHints(hints: Int) {
+        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
+        val ed: SharedPreferences.Editor = pref.edit()
+        ed.putInt("hints", hints)
+        ed.apply()
+    }
+
+    fun getHintsWithPurchase(): Int {
+        pref = context.getSharedPreferences(namePref, Context.MODE_PRIVATE)
+        return pref.getInt("hints", 0)
     }
 
 }
